@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "loginwidget.h"
+#include "testloggedinwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +17,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void loginClicked(int page);
+
 private:
     Ui::MainWindow *ui;
+    LoginWidget login;
+    TestLoggedInWidget test;
 };
 #endif // MAINWINDOW_H
