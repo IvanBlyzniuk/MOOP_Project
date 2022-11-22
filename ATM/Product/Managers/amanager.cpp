@@ -1,9 +1,8 @@
 #include "amanager.h"
 #include "Exceptions\inputexception.h"
 
-AManager::AManager(const text_type& login, const text_type& password) :
-    _login(login),
-    _password(password)
+AManager::AManager(const info_type& info) :
+    _info(info)
 {
     if(!check_input())
     {
@@ -13,22 +12,22 @@ AManager::AManager(const text_type& login, const text_type& password) :
 
 auto AManager::login() const noexcept -> const text_type&
 {
-    return _login;
+    return _info.Login;
 }
 
 auto AManager::password() const noexcept -> const text_type&
 {
-    return _password;
+    return _info.Password;
 }
 
 auto AManager::set_login(const text_type& nval) -> void
 {
-    _login = nval;
+    _info.Login = nval;
 }
 
 auto AManager::set_password(const text_type& nval) -> void
 {
-    _password = nval;
+    _info.Password = nval;
 }
 
 auto AManager::check_input() const noexcept -> bool

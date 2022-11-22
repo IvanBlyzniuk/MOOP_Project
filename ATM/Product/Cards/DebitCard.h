@@ -6,15 +6,7 @@
 class DebitCard : public ICard
 {
 public:
-    DebitCard
-    (
-        const text_type&,
-        const text_type&,
-        const text_type&,
-        const text_type&,
-        const balance_type,
-        const balance_type
-    );
+    DebitCard(const info_type&, const balance_type = s_dflt_credit_limit);
     ~DebitCard() override = default;
 public:
     balance_type credit_limit() const;
@@ -26,28 +18,20 @@ private:
 private:
     bool check_input() const noexcept;
 private:
-    const text_type    _number;
-    const text_type    _pin;
-    const text_type    _owner_firstname;
-    const text_type    _owner_lastname;
-    balance_type _balance;
+    info_type _info;
     balance_type _credit_limit;
+private:
+    static const balance_type s_dflt_credit_limit;
 };
+
+const DebitCard::balance_type DebitCard::s_dflt_credit_limit = 0;
 
 inline DebitCard::DebitCard
 (
-    const text_type& number,
-    const text_type& pin,
-    const text_type& owner_firstname,
-    const text_type& owner_lastname,
-    const balance_type balance,
+    const info_type& info,
     const balance_type credit_limit
 ) :
-    _number(number),
-    _pin(pin),
-    _owner_firstname(owner_firstname),
-    _owner_lastname(owner_lastname),
-    _balance(balance),
+    _info(info),
     _credit_limit(credit_limit)
 {
     if(!check_input())
@@ -63,22 +47,22 @@ inline auto DebitCard::credit_limit() const -> balance_type
 
 inline auto DebitCard::do_card_number() const noexcept -> const text_type&
 {
-    return _number;
+    return _info.Number;
 }
 
 inline auto DebitCard::do_card_pincode() const noexcept -> const text_type&
 {
-    return _pin;
+    return _info.Pin;
 }
 
 inline auto DebitCard::do_card_balance() const noexcept -> balance_type
 {
-    return _balance;
+    return _info.Balance;
 }
 
 inline auto DebitCard::do_set_balance(const balance_type nval) -> void
 {
-    _balance = nval;
+    _info.Balance = nval;
 }
 
 inline auto DebitCard::check_input() const noexcept -> bool

@@ -1,12 +1,30 @@
 #ifndef ICARD_H
 #define ICARD_H
 #include <QString>
+#include "Product/ProductInfo.h"
 
-class ICard
+class ICard;
+
+template<>
+class ProductCommonInfo <ICard>
 {
 public:
     using balance_type = double;
     using text_type = QString;
+public:
+    const text_type Number;
+    const text_type Pin;
+    const text_type Owner_firstname;
+    const text_type Owner_lastname;
+    balance_type Balance;
+};
+
+class ICard
+{
+public:
+    using info_type = ProductCommonInfo<ICard>;
+    using balance_type = info_type::balance_type;
+    using text_type = info_type::text_type;
 public:
     virtual ~ICard() = default;
 public:
