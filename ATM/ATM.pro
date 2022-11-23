@@ -10,8 +10,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Product/Managers/aadministrator.cpp \
     Product/Managers/amanager.cpp \
+    Registrations/cardregistrator.cpp \
 	db.cpp \
     changepinwidget.cpp \
     defaultmanagerwidget.cpp \
@@ -35,11 +35,12 @@ HEADERS += \
     Product/Factories/IFactory.h \
     Product/Factories/ManagerFactory.h \
     Product/Factories/ifactory.h \
-    Product/Factory.h \
     Product/Managers/aadministrator.h \
     Product/Managers/amanager.h \
     Product/ProductInfo.h \
     Product/icard.h \
+    Registrations/cardregistrator.h \
+    Registrations/iregistrator.h \
 	db.h \
     changepinwidget.h \
     defaultmanagerwidget.h \
