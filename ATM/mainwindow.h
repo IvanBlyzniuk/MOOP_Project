@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    LoginWidget login;
+    LoginWidget* login;
     TestLoggedInWidget test;
 };
 #endif // MAINWINDOW_H

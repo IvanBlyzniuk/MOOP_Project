@@ -12,7 +12,7 @@ public:
 protected:
     template<typename Factory>
     using ptr = std::shared_ptr<Factory>;
-    using factory_ptr= ptr<IFactory<product_abstract_type>>;
+    using factory_ptr= ptr<product_abstract_type>;
 public:
     ARegistrator(factory_ptr) noexcept;
     virtual ~ARegistrator() = default;

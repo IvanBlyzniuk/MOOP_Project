@@ -19,6 +19,10 @@ public:
     balance_type Balance;
 };
 
+//ProductCommonInfo<ICard> p = {"2", "2345",...};
+//make_registration(ProductCommonInfo<ICard>({"2", "3",...}))
+//  dynamic_cast<shared_ptr<>>(ICard& smth)
+
 class ICard
 {
 public:

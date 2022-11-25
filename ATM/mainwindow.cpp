@@ -3,21 +3,24 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow),
+      login(new LoginWidget)
 {
     ui->setupUi(this);
-    ui->stackedWidget->insertWidget(0,&login);
+    ui->stackedWidget->insertWidget(0,login);
     ui->stackedWidget->insertWidget(1,&test);
     ui->stackedWidget->setCurrentIndex(0);
 
-    connect(&login,SIGNAL(changePage(int)),this,SLOT(loginClicked(int)));
-    connect(&login,SIGNAL(sendUserSignal(QString)),&test,SLOT(setCurUser(QString)));
+    connect(login,SIGNAL(changePage(int)),this,SLOT(loginClicked(int)));
+    connect(login,SIGNAL(sendUserSignal(QString)),&test,SLOT(setCurUser(QString)));
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete login; login = nullptr;
+
 }
 
 

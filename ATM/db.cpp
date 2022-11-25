@@ -50,6 +50,8 @@ void DB::deserializeCard(const QString& number,const QString& pin)
         qDebug() << "Deserialized credit card: num=" << number << " pin=" << pin << " balance=" << balance <<" firstname=" << first_name << " limit="<<credit_limit;
     }
     //throw new QException();
+
+
 }
 
 void DB::deserializeManager(const QString& login,const QString& password)

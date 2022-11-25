@@ -3,7 +3,7 @@
 #include "DB/iserializer.h"
 #include "Product/Factories/CardFactory.h"
 #include "Product/Cards/icard.h"
-#include "iregistrator.h"
+#include "aregistrator.h"
 
 
 template<typename CardType>

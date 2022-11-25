@@ -3,7 +3,7 @@
 #include "Product/Managers/amanager.h"
 #include "ifactory.h"
 
-template<typename ManagerType>
+template<std::derived_from<AManager> ManagerType>
 class ManagerFactory : public IFactory<AManager>
 {
 public:

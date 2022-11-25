@@ -6,10 +6,7 @@
 class DebitCard : public ICard
 {
 public:
-    DebitCard(const info_type&, const balance_type = s_dflt_credit_limit);
-    ~DebitCard() override = default;
-public:
-    balance_type credit_limit() const;
+    DebitCard(const info_type&);
 private:
     const text_type& do_card_number()          const noexcept override;
     const text_type& do_card_pincode()         const noexcept override;
@@ -19,30 +16,15 @@ private:
     bool check_input() const noexcept;
 private:
     info_type _info;
-    balance_type _credit_limit;
-private:
-    static const balance_type s_dflt_credit_limit;
 };
 
-const DebitCard::balance_type DebitCard::s_dflt_credit_limit = 0;
-
-inline DebitCard::DebitCard
-(
-    const info_type& info,
-    const balance_type credit_limit
-) :
-    _info(info),
-    _credit_limit(credit_limit)
+inline DebitCard::DebitCard(const info_type& info) :
+    _info(info)
 {
     if(!check_input())
     {
         throw InputException("Incorrect card input.");
     }
-}
-
-inline auto DebitCard::credit_limit() const -> balance_type
-{
-    return _credit_limit;
 }
 
 inline auto DebitCard::do_card_number() const noexcept -> const text_type&

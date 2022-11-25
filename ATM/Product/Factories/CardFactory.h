@@ -3,7 +3,7 @@
 #include "Product/Cards/icard.h"
 #include "ifactory.h"
 
-template<typename CardType>
+template<std::derived_from<ICard> CardType>
 class CardFactory : public IFactory<ICard>
 {
 public:
