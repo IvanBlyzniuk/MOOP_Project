@@ -1,10 +1,14 @@
 #ifndef CARDFACTORY_H
 #define CARDFACTORY_H
 #include "Product/Cards/icard.h"
+#include "Product/Cards/creditcard.h"
+#include "Product/Cards/DebitCard.h"
 #include "ifactory.h"
 
-template<std::derived_from<ICard> CardType>
-class CardFactory : public IFactory<ICard>
+using ICardFactory = IFactory<ICard>;
+
+template<std::derived_from<ICardFactory::product_abstract_type> CardType>
+class CardFactory : public ICardFactory
 {
 public:
     using product_type = CardType;
@@ -14,5 +18,8 @@ public:
         return std::make_unique<product_type>(info);
     }
 };
+
+using CreditCardFactory = CardFactory<CreditCard>;
+using DebitCardFactory = CardFactory<DebitCard>;
 
 #endif // CARDFACTORY_H

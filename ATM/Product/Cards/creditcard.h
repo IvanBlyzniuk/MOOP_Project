@@ -2,6 +2,7 @@
 #define CREDITCARD_H
 #include "Product/Cards/icard.h"
 #include "Exceptions/inputexception.h"
+
 class CreditCard : public ICard
 {
 public:
@@ -33,7 +34,7 @@ inline CreditCard::CreditCard
     _info(info),
     _credit_limit(credit_limit)
 {
-    if(!check_input())
+    if (!check_input())
     {
         throw InputException("Incorrect card input.");
     }

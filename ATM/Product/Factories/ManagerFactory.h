@@ -3,8 +3,10 @@
 #include "Product/Managers/amanager.h"
 #include "ifactory.h"
 
-template<std::derived_from<AManager> ManagerType>
-class ManagerFactory : public IFactory<AManager>
+using IManagerFactory = IFactory<AManager>;
+
+template<std::derived_from<IManagerFactory::product_abstract_type> ManagerType>
+class ManagerFactory : public IManagerFactory
 {
 public:
     using product_type = ManagerType;

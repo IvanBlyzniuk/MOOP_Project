@@ -11,7 +11,6 @@ CONFIG += c++20
 
 SOURCES += \
     Product/Managers/amanager.cpp \
-    Registrations/cardregistrator.cpp \
 	db.cpp \
     changepinwidget.cpp \
     defaultmanagerwidget.cpp \
@@ -39,6 +38,7 @@ HEADERS += \
     Product/Managers/amanager.h \
     Product/ProductInfo.h \
     Product/icard.h \
+    Registrations/RegistratorTypedefs.h \
     Registrations/aregistrator.h \
     Registrations/cardregistrator.h \
 	db.h \

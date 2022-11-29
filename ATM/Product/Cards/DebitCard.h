@@ -21,7 +21,7 @@ private:
 inline DebitCard::DebitCard(const info_type& info) :
     _info(info)
 {
-    if(!check_input())
+    if (!check_input())
     {
         throw InputException("Incorrect card input.");
     }
@@ -52,5 +52,7 @@ inline auto DebitCard::check_input() const noexcept -> bool
     //TODO text input checking
     return card_balance() >= 0;
 }
+
+
 
 #endif // DEBITCARD_H
