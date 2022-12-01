@@ -4,7 +4,15 @@
 #include "Product/ProductInfo.h"
 
 class ICard;
-
+template<typename Product>
+class LoginParams;
+template<>
+class LoginParams<ICard>
+{
+public:
+    QString Number;
+    QString Pin;
+};
 template<>
 class ProductCommonInfo <ICard>
 {

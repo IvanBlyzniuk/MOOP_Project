@@ -1,7 +1,10 @@
 #ifndef DEFAULTMANAGERWIDGET_H
 #define DEFAULTMANAGERWIDGET_H
 
+#include "Product/Cards/icard.h"
 #include <QWidget>
+
+#include <Registrations/aregistrator.h>s
 
 namespace Ui {
 class DefaultManagerWidget;
@@ -17,6 +20,7 @@ public:
 
 private:
     Ui::DefaultManagerWidget *ui;
+    std::shared_ptr<ARegistrator<typename ICard>> registrator;
 };
 
 #endif // DEFAULTMANAGERWIDGET_H

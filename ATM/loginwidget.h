@@ -1,8 +1,11 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
-#include <IScreenChangeable.h>
 #include <QWidget>
+#include <Login/cardloginagent.h>
+
+
+
 
 namespace Ui {
 class LoginWidget;
@@ -21,6 +24,8 @@ private slots:
 
 private:
     Ui::LoginWidget *ui;
+    std::shared_ptr<ILoginAgent<ICard>> loginAgent;
+    std::shared_ptr<ISerializer> serializer;
     void login();
 
 signals:
