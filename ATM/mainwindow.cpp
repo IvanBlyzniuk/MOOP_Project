@@ -4,7 +4,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
-      cardLoginW(new LoginWidget),
+      serializer(nullptr),
+      cardLoginW(new LoginWidget(nullptr,serializer)),
       managerLoginW(new ManagerLoginWidget),
       defaultManagerW(new DefaultManagerWidget),
       privilegedManagerW(new PrivilegedManagerWidget),

@@ -20,7 +20,8 @@ class LoginWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LoginWidget(QWidget *parent = nullptr);
+    //explicit LoginWidget(QWidget *parent = nullptr);
+    explicit LoginWidget(QWidget *parent = nullptr,std::shared_ptr<ISerializer> = nullptr);
     ~LoginWidget();
 
 private slots:
@@ -28,8 +29,8 @@ private slots:
 
 private:
     Ui::LoginWidget *ui;
-    //std::shared_ptr<ILoginAgent<ICard>> loginAgent;
-    //std::shared_ptr<ISerializer> serializer;
+    std::shared_ptr<ILoginAgent<ICard>> loginAgent;
+    std::shared_ptr<ISerializer> serializer;
     void login();
 
 signals:

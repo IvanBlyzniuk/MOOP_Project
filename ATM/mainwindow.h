@@ -28,6 +28,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    std::shared_ptr<ISerializer> serializer;
     LoginWidget* cardLoginW;
     ManagerLoginWidget* managerLoginW;
     DefaultManagerWidget* defaultManagerW;
@@ -36,5 +37,6 @@ private:
     PutWithdrawWidget* putWithdrawW;
     ChangePinWidget* changePinW;
     TestLoggedInWidget* test;
+
 };
 #endif // MAINWINDOW_H
