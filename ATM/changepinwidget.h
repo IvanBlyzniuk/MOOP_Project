@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::ChangePinWidget *ui;
+signals:
+    void changePage(int);
 };
 
 #endif // CHANGEPINWIDGET_H

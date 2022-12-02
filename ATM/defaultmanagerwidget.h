@@ -21,6 +21,8 @@ public:
 private:
     Ui::DefaultManagerWidget *ui;
     std::shared_ptr<ARegistrator<typename ICard>> registrator;
+signals:
+    void changePage(int);
 };
 
 #endif // DEFAULTMANAGERWIDGET_H

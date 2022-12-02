@@ -12,7 +12,7 @@ LoginWidget::LoginWidget(QWidget *parent) :
     ui->cardNumField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->pinField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->infoField->setReadOnly(true);
-    loginAgent = std::make_shared<CardLoginAgent>(serializer);
+    //loginAgent = std::make_shared<CardLoginAgent>(serializer);
 }
 
 LoginWidget::~LoginWidget()
@@ -24,7 +24,8 @@ void LoginWidget::login()
 {
     try
     {
-        loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+    //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+        changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
     }
     catch(...)
     {

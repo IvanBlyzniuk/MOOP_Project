@@ -1,8 +1,8 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
-
+#include <Enums/widgets.h>
 #include <QWidget>
-#include <Login/cardloginagent.h>
+//#include <Login/cardloginagent.h>
 
 
 
@@ -24,13 +24,14 @@ private slots:
 
 private:
     Ui::LoginWidget *ui;
-    std::shared_ptr<ILoginAgent<ICard>> loginAgent;
-    std::shared_ptr<ISerializer> serializer;
+    //std::shared_ptr<ILoginAgent<ICard>> loginAgent;
+    //std::shared_ptr<ISerializer> serializer;
     void login();
 
 signals:
-    void sendUserSignal(const QString&);
     void changePage(int);
+    void sendUserSignal(const QString&);
+
 };
 
 #endif // LOGINWIDGET_H

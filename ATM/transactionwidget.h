@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::TransactionWidget *ui;
+signals:
+    void changePage(int);
 };
 
 #endif // TRANSACTIONWIDGET_H

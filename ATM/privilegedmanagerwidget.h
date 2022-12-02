@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::PrivilegedManagerWidget *ui;
+signals:
+    void changePage(int);
 };
 
 #endif // PRIVILEGEDMANAGERWIDGET_H
