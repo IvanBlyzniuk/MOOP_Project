@@ -1,6 +1,10 @@
 #include "loginwidget.h"
 #include "ui_loginwidget.h"
 #include <QRegularExpressionValidator>
+#include "Product/Cards/icard.h"
+#include "Login/ILoginAgent.h"
+
+#include "Login/cardloginagent.h"
 
 
 LoginWidget::LoginWidget(QWidget *parent) :

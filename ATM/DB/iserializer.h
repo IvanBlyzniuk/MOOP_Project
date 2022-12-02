@@ -6,6 +6,8 @@
 #include "Product/ProductInfo.h"
 #include <memory>
 
+//TODO
+//add balance
 class ISerializer
 {
 public:
@@ -19,10 +21,11 @@ public:
     void serialize(in_product_ptr<DebitCard>)     const;
     void serialize(in_product_ptr<CreditCard>)      const;
     void serialize(in_product_ptr<AManager>)       const;
-    bool exists(const product_info<ICard>&)        const noexcept;
-    bool exists(const product_info<AManager>&)     const noexcept;
-    out_product_ptr<ICard> deserializeCard()       const;
-    out_product_ptr<AManager> deserializeManager() const;
+    bool existsCard(/*key params*/)        const noexcept;
+    bool existsManager(/*key params*/)     const noexcept;
+    void remove/*Card/Manager*/(/*key params*/) const;
+    out_product_ptr<ICard> deserializeCard(/*key params*/)       const;
+    out_product_ptr<AManager> deserializeManager(/*key params*/) const;
 private:
     virtual void do_serialize(in_product_ptr<DebitCard>)            const = 0;
     virtual void do_serialize(in_product_ptr<CreditCard>)             const = 0;
@@ -48,15 +51,15 @@ inline auto ISerializer::serialize(in_product_ptr<AManager> ptr) const -> void
     do_serialize(ptr);
 }
 
-inline auto ISerializer::exists(const product_info<ICard>& info) const noexcept -> bool
-{
-    return do_exists(info);
-}
+//inline auto ISerializer::exists(const product_info<ICard>& info) const noexcept -> bool
+//{
+//    return do_exists(info);
+//}
 
-inline auto ISerializer::exists(const product_info<AManager>& info) const noexcept -> bool
-{
-    return do_exists(info);
-}
+//inline auto ISerializer::exists(const product_info<AManager>& info) const noexcept -> bool
+//{
+//    return do_exists(info);
+//}
 
 inline auto ISerializer::deserializeCard() const -> out_product_ptr<ICard>
 {
