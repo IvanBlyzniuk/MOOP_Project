@@ -31,6 +31,7 @@ public:
 //make_registration(ProductCommonInfo<ICard>({"2", "3",...}))
 //  dynamic_cast<shared_ptr<>>(ICard& smth)
 
+//TODO addMoney, getMoney
 class ICard
 {
 public:

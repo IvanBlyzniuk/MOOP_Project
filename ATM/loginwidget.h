@@ -2,10 +2,14 @@
 #define LOGINWIDGET_H
 
 #include <QWidget>
-#include <Login/cardloginagent.h>
+//#include <Login/cardloginagent.h>
 
+template<typename T>
+class ILoginAgent;
 
+class ISerializer;
 
+class ICard;
 
 namespace Ui {
 class LoginWidget;

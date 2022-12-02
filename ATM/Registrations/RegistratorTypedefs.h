@@ -4,11 +4,9 @@
 #include "Product/Cards/icard.h"
 #include "Product/Managers/amanager.h"
 #include "Product/Managers/aadministrator.h"
-#include "Product/Cards/DebitCard.h"
-#include "Product/Cards/creditcard.h"
 
 using ICardRegistrator = ARegistrator<ICard>;
 using IManagerRegistrator = ARegistrator<AManager>;
-using IAdministratorRegistrator = ARegistrator<AManager>;
+using IAdministratorRegistrator = ARegistrator<AAdministrator>;
 
 #endif // REGISTRATORTYPEDEFS_H
