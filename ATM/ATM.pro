@@ -26,9 +26,11 @@ SOURCES += \
 
 HEADERS += \
     DB/iserializer.h \
+    Enums/widgets.h \
     Exceptions/inputexception.h \
     Login/cardloginagent.h \
     Login/iloginagent.h \
+    Login/managerloginagent.h \
     Product/Cards/creditcard.h \
     Product/DebitCard.h \
     Product/Factories/AdministratorFactory.h \

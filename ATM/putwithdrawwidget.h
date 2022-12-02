@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::PutWithdrawWidget *ui;
+signals:
+    void changePage(int);
 };
 
 #endif // PUTWITHDRAWWIDGET_H

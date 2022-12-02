@@ -2,7 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "changepinwidget.h"
+#include "defaultmanagerwidget.h"
 #include "loginwidget.h"
+#include "mainoptionswidget.h"
+#include "managerloginwidget.h"
+#include "privilegedmanagerwidget.h"
+#include "putwithdrawwidget.h"
 #include "testloggedinwidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -18,15 +24,19 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void loginClicked(int page);
+    void changeCurrentWidget(int page);
 
 private:
     Ui::MainWindow *ui;
-    LoginWidget* login;
-    TestLoggedInWidget test;
+    std::shared_ptr<ISerializer> serializer;
+    LoginWidget* cardLoginW;
+    ManagerLoginWidget* managerLoginW;
+    DefaultManagerWidget* defaultManagerW;
+    PrivilegedManagerWidget* privilegedManagerW;
+    MainOptionsWidget* mainOptionsW;
+    PutWithdrawWidget* putWithdrawW;
+    ChangePinWidget* changePinW;
+    TestLoggedInWidget* test;
+
 };
 #endif // MAINWINDOW_H

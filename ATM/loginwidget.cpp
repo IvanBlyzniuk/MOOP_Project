@@ -2,14 +2,15 @@
 #include "ui_loginwidget.h"
 #include <QRegularExpressionValidator>
 #include "Product/Cards/icard.h"
-#include "Login/ILoginAgent.h"
+#include "Login/iloginagent.h"
 
 #include "Login/cardloginagent.h"
 
 
-LoginWidget::LoginWidget(QWidget *parent) :
+LoginWidget::LoginWidget(QWidget *parent,std::shared_ptr<ISerializer> mserializer) :
     QWidget(parent),
-    ui(new Ui::LoginWidget)
+    ui(new Ui::LoginWidget),
+    serializer(mserializer)
 {
     ui->setupUi(this);
     ui->pinField->setEchoMode(QLineEdit::Password);
@@ -28,7 +29,8 @@ void LoginWidget::login()
 {
     try
     {
-        loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+    //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+        changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
     }
     catch(...)
     {
