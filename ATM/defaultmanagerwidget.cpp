@@ -12,3 +12,12 @@ DefaultManagerWidget::~DefaultManagerWidget()
 {
     delete ui;
 }
+//registerC(){
+//    if(checkbox){
+//        registrator = new CardRegistrator<DebitCard>(new CardFactory<DebitCard>());
+//    }
+//    else{
+//        registrator = new CardRegistrator<CreditCard>(new CardFactory<CreditCard>());
+//    }
+//    registrator.
+//}

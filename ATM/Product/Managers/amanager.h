@@ -6,6 +6,15 @@
 #include "Product/ProductInfo.h"
 
 class AManager;
+template<typename Product>
+class LoginParams;
+template<>
+class LoginParams<AManager>
+{
+public:
+    QString Login;
+    QString Password;
+};
 
 template<>
 class ProductCommonInfo <AManager>
