@@ -6,6 +6,8 @@
 #include "Product/ProductInfo.h"
 #include <memory>
 
+
+
 //TODO
 //add balance
 class ISerializer
@@ -18,57 +20,65 @@ public:
     template<typename ProductType>
     using product_info = ProductCommonInfo<ProductType>;
 public:
-    void serialize(in_product_ptr<DebitCard>)     const;
-    void serialize(in_product_ptr<CreditCard>)      const;
-    void serialize(in_product_ptr<AManager>)       const;
-    bool existsCard(/*key params*/)        const noexcept;
-    bool existsManager(/*key params*/)     const noexcept;
-    void remove/*Card/Manager*/(/*key params*/) const;
-    out_product_ptr<ICard> deserializeCard(/*key params*/)       const;
-    out_product_ptr<AManager> deserializeManager(/*key params*/) const;
+    void serialize(in_product_ptr<ICard>)    const;
+//    void serialize(in_product_ptr<DebitCard>)    const;
+//    void serialize(in_product_ptr<CreditCard>)   const;
+    void serialize(in_product_ptr<AManager>)     const;
+    bool exists(const ProductKeyInfo<ICard>&)    const noexcept;
+    bool exists(const ProductKeyInfo<AManager>&) const noexcept;
+    void remove(const ProductKeyInfo<ICard>&) const;
+    void remove(const ProductKeyInfo<AManager>&) const;
+    out_product_ptr<ICard> deserialize(const LoginParams<ICard>&)       const;
+    out_product_ptr<AManager> deserialize(const LoginParams<AManager>&) const;
 private:
-    virtual void do_serialize(in_product_ptr<DebitCard>)            const = 0;
-    virtual void do_serialize(in_product_ptr<CreditCard>)             const = 0;
-    virtual void do_serialize(in_product_ptr<AManager>)              const = 0;
-    virtual bool do_exists(const product_info<ICard>&)      const noexcept = 0;
-    virtual bool do_exists(const product_info<AManager>&)   const noexcept = 0;
-    virtual out_product_ptr<ICard> do_deserialize_card()             const = 0;
-    virtual out_product_ptr<AManager> do_deserialize_manager()       const = 0;
+    void do_serialize(const ICard&) const {throw "Default error";}
+    virtual void do_serialize(const DebitCard&)            const = 0;
+    virtual void do_serialize(const CreditCard&)             const = 0;
+    virtual void do_serialize(const AManager&)              const = 0;
+    virtual bool do_exists(const ProductKeyInfo<ICard>&)      const noexcept = 0;
+    virtual bool do_exists(const ProductKeyInfo<AManager>&)   const noexcept = 0;
+    virtual out_product_ptr<ICard> do_deserialize(const LoginParams<ICard>&)       const = 0;
+    virtual out_product_ptr<AManager> do_deserialize(const LoginParams<AManager>&) const = 0;
 };
 
-inline auto ISerializer::serialize(in_product_ptr<DebitCard> ptr) const -> void
+inline auto ISerializer::serialize(in_product_ptr<ICard> ptr) const -> void
 {
-    do_serialize(ptr);
+    do_serialize(*ptr);
 }
 
-inline auto ISerializer::serialize(in_product_ptr<CreditCard> ptr) const -> void
-{
-    do_serialize(ptr);
-}
+//inline auto ISerializer::serialize(in_product_ptr<DebitCard> ptr) const -> void
+//{
+//    do_serialize(*ptr);
+//}
+
+//inline auto ISerializer::serialize(in_product_ptr<CreditCard> ptr) const -> void
+//{
+//    do_serialize(*ptr);
+//}
 
 inline auto ISerializer::serialize(in_product_ptr<AManager> ptr) const -> void
 {
-    do_serialize(ptr);
+    do_serialize(*ptr);
 }
 
-//inline auto ISerializer::exists(const product_info<ICard>& info) const noexcept -> bool
-//{
-//    return do_exists(info);
-//}
-
-//inline auto ISerializer::exists(const product_info<AManager>& info) const noexcept -> bool
-//{
-//    return do_exists(info);
-//}
-
-inline auto ISerializer::deserializeCard() const -> out_product_ptr<ICard>
+inline auto ISerializer::exists(const ProductKeyInfo<ICard>& info) const noexcept -> bool
 {
-    return do_deserialize_card();
+    return do_exists(info);
 }
 
-inline auto ISerializer::deserializeManager() const -> out_product_ptr<AManager>
+inline auto ISerializer::exists(const ProductKeyInfo<AManager>& info) const noexcept -> bool
 {
-    return do_deserialize_manager();
+    return do_exists(info);
+}
+
+inline auto ISerializer::deserialize(const LoginParams<ICard>& ps) const -> out_product_ptr<ICard>
+{
+    return do_deserialize(ps);
+}
+
+inline auto ISerializer::deserialize(const LoginParams<AManager>& ps) const -> out_product_ptr<AManager>
+{
+    return do_deserialize(ps);
 }
 
 #endif // ISERIALIZER_H

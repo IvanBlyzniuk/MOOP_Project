@@ -47,22 +47,22 @@ inline auto CreditCard::credit_limit() const -> balance_type
 
 inline auto CreditCard::do_card_number() const noexcept -> const text_type&
 {
-    return _info.Number;
+    return _info.get_number();
 }
 
 inline auto CreditCard::do_card_pincode() const noexcept -> const text_type&
 {
-    return _info.Pin;
+    return _info.get_pin();
 }
 
 inline auto CreditCard::do_card_balance() const noexcept -> balance_type
 {
-    return _info.Balance;
+    return _info.get_balance();
 }
 
 inline auto CreditCard::do_set_balance(const balance_type nval) -> void
 {
-    _info.Balance = nval;
+    _info.set_balance(nval);
 }
 
 inline auto CreditCard::check_input() const noexcept -> bool

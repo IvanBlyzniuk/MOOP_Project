@@ -4,27 +4,74 @@
 #include "Product/ProductInfo.h"
 
 class ICard;
-template<typename Product>
-class LoginParams;
+
+template<>
+class ProductKeyInfo<ICard>
+{
+public:
+    using text_type = QString;
+public:
+    ProductKeyInfo(const text_type& number) noexcept :
+        _number(number)
+    {}
+public:
+    const text_type& get_number() const noexcept { return _number; }
+private:
+    const QString _number;
+};
+
 template<>
 class LoginParams<ICard>
 {
 public:
-    QString Number;
-    QString Pin;
+    using text_type = ProductKeyInfo<ICard>::text_type;
+public:
+    LoginParams(const text_type& number, const text_type& pin) noexcept :
+        _key({number}), _pin(pin)
+    {}
+public:
+    const ProductKeyInfo<ICard>& get_key () const noexcept {return _key; }
+    const text_type& get_number() const noexcept { return get_key().get_number(); }
+    const text_type& get_pin() const noexcept { return _pin; }
+private:
+    ProductKeyInfo<ICard> _key;
+    const text_type _pin;
 };
+
 template<>
 class ProductCommonInfo <ICard>
 {
 public:
     using balance_type = double;
-    using text_type = QString;
+    using text_type = LoginParams<ICard>::text_type;
 public:
-    const text_type Number;
-    const text_type Pin;
-    const text_type Owner_firstname;
-    const text_type Owner_lastname;
-    balance_type Balance;
+    ProductCommonInfo
+    (
+        const text_type number,
+        const text_type pin,
+        const text_type owner_firstname,
+        const text_type owner_lastname,
+        const balance_type balance
+    ) noexcept :
+        _login_info({number, pin}),
+        _owner_firstname(owner_firstname),
+        _owner_lastname(owner_lastname),
+        _balance(balance)
+    {}
+public:
+    const ProductKeyInfo<ICard>& get_key () const noexcept {return get_login_info().get_key(); }
+    const LoginParams<ICard>& get_login_info() const noexcept { return _login_info; }
+    const text_type&    get_number() const noexcept { return get_login_info().get_number(); }
+    const text_type&    get_pin() const noexcept { return get_login_info().get_pin(); }
+    const text_type&    get_owner_firstname() const noexcept { return _owner_firstname; }
+    const text_type&    get_owner_lastname() const noexcept { return _owner_lastname; }
+    const balance_type  get_balance() const noexcept { return _balance; }
+    void set_balance(const balance_type bal) { _balance = bal; }
+private:
+    LoginParams<ICard> _login_info;
+    const text_type _owner_firstname;
+    const text_type _owner_lastname;
+    balance_type _balance;
 };
 
 //ProductCommonInfo<ICard> p = {"2", "2345",...};
