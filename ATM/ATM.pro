@@ -10,11 +10,11 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    DB/db.cpp \
     Transactions/transaction.cpp \
     Transactions/transactionmanager.cpp \
     Product/Managers/privilegedmanager.cpp \
     Product/Managers/standardmanager.cpp \
-    db.cpp \
     changepinwidget.cpp \
     defaultmanagerwidget.cpp \
     loginwidget.cpp \
@@ -27,6 +27,7 @@ SOURCES += \
     transactionwidget.cpp
 
 HEADERS += \
+    DB/db.h \
     DB/iserializer.h \
     Enums/widgets.h \
     Exceptions/AlreadyExistsException.h \
@@ -55,7 +56,6 @@ HEADERS += \
     Registrations/cardregistrator.h \
     Transactions/transaction.h \
     Transactions/transactionmanager.h \
-	db.h \
     changepinwidget.h \
     defaultmanagerwidget.h \
     loginwidget.h \
