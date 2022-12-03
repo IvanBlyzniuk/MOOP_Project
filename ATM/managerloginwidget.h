@@ -18,13 +18,12 @@ class ManagerLoginWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ManagerLoginWidget(QWidget *parent = nullptr);
+    explicit ManagerLoginWidget(std::shared_ptr<ISerializer>,QWidget *parent = nullptr);
     ~ManagerLoginWidget();
 
 private:
     Ui::ManagerLoginWidget *ui;
     std::shared_ptr<ILoginAgent<AManager>> loginAgent;
-    std::shared_ptr<ISerializer> serializer;
     void login(std::shared_ptr<AManager>);
     void login(std::shared_ptr<AAdministrator>);
     void makeManagerLogin();
@@ -33,6 +32,7 @@ signals:
     void sendManager(std::shared_ptr<AManager>);
 private slots:
     void on_backButton_clicked();
+    void on_loginButton_clicked();
 };
 
 #endif // MANAGERLOGINWIDGET_H

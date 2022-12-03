@@ -41,6 +41,10 @@ void LoginWidget::login()
         ui->infoField->setText("Login data is incorrect!");
     }
     }
+    else
+    {
+        ui->infoField->setText("Please, fill in all the fields.");
+    }
 }
 
 

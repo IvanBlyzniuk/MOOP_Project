@@ -3,12 +3,12 @@
 
 #include <Login/managerloginagent.h>
 
-ManagerLoginWidget::ManagerLoginWidget(QWidget *parent) :
+ManagerLoginWidget::ManagerLoginWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ManagerLoginWidget)
 {
-    ui->loginField->setEchoMode(QLineEdit::Password);
     ui->setupUi(this);
+    ui->loginField->setEchoMode(QLineEdit::Password);
     loginAgent = std::make_shared<ManagerLoginAgent>(serializer);
 }
 
@@ -43,10 +43,20 @@ void ManagerLoginWidget::makeManagerLogin()
         ui->infoField->setText("Login data is incorrect!");
     }
     }
+    else
+    {
+        ui->infoField->setText("Please, fill in all the fields.");
+    }
 }
 
 void ManagerLoginWidget::on_backButton_clicked()
 {
     emit changePage(static_cast<int>(Widgets::CARD_LOGIN));
+}
+
+
+void ManagerLoginWidget::on_loginButton_clicked()
+{
+    makeManagerLogin();
 }
 
