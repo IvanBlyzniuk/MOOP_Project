@@ -7,25 +7,32 @@ namespace Ui {
 class ManagerLoginWidget;
 }
 class AManager;
-class IAdministrator;
+class AAdministrator;
+template<typename T>
+class ILoginAgent;
+
+class ISerializer;
 
 class ManagerLoginWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ManagerLoginWidget(QWidget *parent = nullptr);
+    explicit ManagerLoginWidget(std::shared_ptr<ISerializer>,QWidget *parent = nullptr);
     ~ManagerLoginWidget();
 
 private:
     Ui::ManagerLoginWidget *ui;
-    void login(const AManager&);
-    void login(const IAdministrator&);
+    std::shared_ptr<ILoginAgent<AManager>> loginAgent;
+    void login(std::shared_ptr<AManager>);
+    void login(std::shared_ptr<AAdministrator>);
+    void makeManagerLogin();
 signals:
     void changePage(int);
     void sendManager(std::shared_ptr<AManager>);
 private slots:
     void on_backButton_clicked();
+    void on_loginButton_clicked();
 };
 
 #endif // MANAGERLOGINWIDGET_H

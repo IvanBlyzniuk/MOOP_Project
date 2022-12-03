@@ -1,5 +1,8 @@
 #ifndef ALREADYEXISTSEXCEPTION_H
 #define ALREADYEXISTSEXCEPTION_H
+
+#include <QException>
+
 class AlreadyExistsException : public QException
 {
 public:

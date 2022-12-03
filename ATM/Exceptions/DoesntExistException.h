@@ -1,5 +1,8 @@
 #ifndef DOESNTEXISTEXCEPTION_H
 #define DOESNTEXISTEXCEPTION_H
+
+#include <QException>
+
 class DoesntExistException : public QException
 {
 public:

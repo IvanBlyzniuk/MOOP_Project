@@ -6,6 +6,8 @@
 
 #include <QRegularExpressionValidator>
 
+#include <Exceptions/DoesntExistException.h>
+
 TransactionWidget::TransactionWidget(std::shared_ptr<ISerializer> ser,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TransactionWidget),
@@ -60,7 +62,7 @@ void TransactionWidget::on_sendTransactionButton_clicked()
             QString cardNum = ui->cardNumField->text();
             ui->infoField->setText(tr.sendTransaction(sum,cardNum)->toMessage());
         }
-        catch (...)
+        catch (DoesntExistException)
         {
             ui->infoField->setText("Card number of the receiver is not valid.");
         }

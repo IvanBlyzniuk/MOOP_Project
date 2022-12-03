@@ -22,7 +22,7 @@ ManagerLoginAgent::ManagerLoginAgent(const std::shared_ptr<ISerializer> s) : ser
 
 inline std::shared_ptr<AManager> ManagerLoginAgent::do_login(const LoginParams<AManager> & params) const
 {
-    std::shared_ptr<AManager> manager = serializer -> deserializeManager(/*params*/);
+    std::shared_ptr<AManager> manager = serializer -> deserialize(params);
     return manager;
 }
 
