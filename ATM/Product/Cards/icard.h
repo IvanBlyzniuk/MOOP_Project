@@ -4,27 +4,74 @@
 #include "Product/ProductInfo.h"
 
 class ICard;
-template<typename Product>
-class LoginParams;
+
 template<>
-class LoginParams<ICard>
+class ProductKeyInfo<ICard> : public KeyInfoBase
 {
 public:
-    QString Number;
-    QString Pin;
+    using text_type = QString;
+public:
+    ProductKeyInfo(const text_type& number) noexcept :
+        _number(number)
+    {}
+public:
+    const text_type& get_number() const noexcept { return _number; }
+private:
+    const QString _number;
 };
+
 template<>
-class ProductCommonInfo <ICard>
+class LoginParams<ICard> : public LoginInfoBase
+{
+public:
+    using text_type = ProductKeyInfo<ICard>::text_type;
+public:
+    LoginParams(const text_type& number, const text_type& pin) noexcept :
+        _key({number}), _pin(pin)
+    {}
+public:
+    const ProductKeyInfo<ICard>& get_key () const noexcept {return _key; }
+    const text_type& get_number() const noexcept { return get_key().get_number(); }
+    const text_type& get_pin() const noexcept { return _pin; }
+private:
+    ProductKeyInfo<ICard> _key;
+    const text_type _pin;
+};
+
+template<>
+class ProductCommonInfo <ICard> : public CommonInfoBase
 {
 public:
     using balance_type = double;
-    using text_type = QString;
+    using text_type = LoginParams<ICard>::text_type;
 public:
-    const text_type Number;
-    const text_type Pin;
-    const text_type Owner_firstname;
-    const text_type Owner_lastname;
-    balance_type Balance;
+    ProductCommonInfo
+    (
+        const text_type number,
+        const text_type pin,
+        const text_type owner_firstname,
+        const text_type owner_lastname,
+        const balance_type balance
+    ) noexcept :
+        _login_info({number, pin}),
+        _owner_firstname(owner_firstname),
+        _owner_lastname(owner_lastname),
+        _balance(balance)
+    {}
+public:
+    const ProductKeyInfo<ICard>& get_key () const noexcept {return get_login_info().get_key(); }
+    const LoginParams<ICard>& get_login_info() const noexcept { return _login_info; }
+    const text_type&    get_number() const noexcept { return get_login_info().get_number(); }
+    const text_type&    get_pin() const noexcept { return get_login_info().get_pin(); }
+    const text_type&    get_owner_firstname() const noexcept { return _owner_firstname; }
+    const text_type&    get_owner_lastname() const noexcept { return _owner_lastname; }
+    const balance_type  get_balance() const noexcept { return _balance; }
+    void set_balance(const balance_type bal) { _balance = bal; }
+private:
+    LoginParams<ICard> _login_info;
+    text_type _owner_firstname;
+    text_type _owner_lastname;
+    balance_type _balance;
 };
 
 //ProductCommonInfo<ICard> p = {"2", "2345",...};
@@ -32,12 +79,18 @@ public:
 //  dynamic_cast<shared_ptr<>>(ICard& smth)
 
 //TODO addMoney, getMoney
-class ICard
+class ICard : public IProduct
 {
 public:
-    using info_type = ProductCommonInfo<ICard>;
-    using balance_type = info_type::balance_type;
-    using text_type = info_type::text_type;
+    using key_type = ProductKeyInfo<ICard>;
+    using login_info_type = LoginParams<ICard>;
+    using common_info_type = ProductCommonInfo<ICard>;
+    using balance_type = common_info_type::balance_type;
+    using text_type = common_info_type::text_type;
+public:
+    static_assert(std::is_base_of_v<KeyInfoBase, key_type>, "Key type must inherit from KeyInfoBase.");
+    static_assert(std::is_base_of_v<LoginInfoBase, login_info_type>, "Login info type must inherit from LoginInfoBase");
+    static_assert(std::is_base_of_v<CommonInfoBase, common_info_type>, "Common info type must inherit from CommonInfoBase");
 public:
     virtual ~ICard() = default;
 public:
