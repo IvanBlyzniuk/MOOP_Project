@@ -6,29 +6,23 @@ class AAdministrator : public AManager
 {
 public:
     using manager_ptr = std::shared_ptr<AManager>;
+    using manager_reg_ptr = std::shared_ptr<ARegistrator<AManager>>;
 public:
-    AAdministrator(const info_type&);
-public:
-    void add_manager(manager_ptr) const;
-    void rem_manager(manager_ptr) const;
+    void add_manager(manager_ptr, manager_reg_ptr) const;
+    void rem_manager(const key_type&, manager_reg_ptr) const;
 private:
-    virtual void do_add_manager(manager_ptr) const = 0;
-    virtual void do_rem_manager(manager_ptr) const = 0;
+    virtual void do_add_manager(manager_ptr, manager_reg_ptr) const = 0;
+    virtual void do_rem_manager(const key_type&, manager_reg_ptr) const = 0;
 };
 
-AAdministrator::AAdministrator(const info_type& info) :
-    AManager(info)
+inline void AAdministrator::add_manager(manager_ptr mptr, manager_reg_ptr db) const
 {
+    do_add_manager(mptr, db);
 }
 
-inline void AAdministrator::add_manager(manager_ptr mptr) const
+inline void AAdministrator::rem_manager(const key_type& key, manager_reg_ptr db) const
 {
-    do_add_manager(mptr);
-}
-
-inline void AAdministrator::rem_manager(manager_ptr mptr) const
-{
-    do_rem_manager(mptr);
+    do_rem_manager(key, db);
 }
 
 #endif // AADMINISTRATOR_H

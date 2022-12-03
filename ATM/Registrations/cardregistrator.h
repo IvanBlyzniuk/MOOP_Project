@@ -30,8 +30,8 @@ public:
     CardRegistrator(serializer_ptr) noexcept;
 private:
     void do_make_registration(const product_abstract_type&) const override;
-    void do_remove_registration(const product_abstract_type&) const override;
-    bool do_can_be_registered(const product_abstract_type&) const noexcept override;
+    void do_remove_registration(const product_key_type&) const override;
+    bool do_can_be_registered(const product_key_type&) const noexcept override;
 private:
     serializer_ptr _db;
 };
@@ -52,7 +52,7 @@ CardRegMethod do_make_registration(const product_abstract_type& info) const -> v
     //else throw
 }
 
-CardRegMethod do_remove_registration(const product_abstract_type& info) const -> void
+CardRegMethod do_remove_registration(const product_key_type& info) const -> void
 {
     //if (can_be_registered(info))
     //{
@@ -61,7 +61,7 @@ CardRegMethod do_remove_registration(const product_abstract_type& info) const ->
     //else throw
 }
 
-CardRegMethod do_can_be_registered(const product_abstract_type& info) const noexcept -> bool
+CardRegMethod do_can_be_registered(const product_key_type& info) const noexcept -> bool
 {
     return false;//!_db->exists(info);
 }

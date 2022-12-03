@@ -6,7 +6,7 @@
 class ICard;
 
 template<>
-class ProductKeyInfo<ICard>
+class ProductKeyInfo<ICard> : public KeyInfoBase
 {
 public:
     using text_type = QString;
@@ -21,7 +21,7 @@ private:
 };
 
 template<>
-class LoginParams<ICard>
+class LoginParams<ICard> : public LoginInfoBase
 {
 public:
     using text_type = ProductKeyInfo<ICard>::text_type;
@@ -39,7 +39,7 @@ private:
 };
 
 template<>
-class ProductCommonInfo <ICard>
+class ProductCommonInfo <ICard> : public CommonInfoBase
 {
 public:
     using balance_type = double;
@@ -69,8 +69,8 @@ public:
     void set_balance(const balance_type bal) { _balance = bal; }
 private:
     LoginParams<ICard> _login_info;
-    const text_type _owner_firstname;
-    const text_type _owner_lastname;
+    text_type _owner_firstname;
+    text_type _owner_lastname;
     balance_type _balance;
 };
 
@@ -79,12 +79,18 @@ private:
 //  dynamic_cast<shared_ptr<>>(ICard& smth)
 
 //TODO addMoney, getMoney
-class ICard
+class ICard : public IProduct
 {
 public:
-    using info_type = ProductCommonInfo<ICard>;
-    using balance_type = info_type::balance_type;
-    using text_type = info_type::text_type;
+    using key_type = ProductKeyInfo<ICard>;
+    using login_info_type = LoginParams<ICard>;
+    using common_info_type = ProductCommonInfo<ICard>;
+    using balance_type = common_info_type::balance_type;
+    using text_type = common_info_type::text_type;
+public:
+    static_assert(std::is_base_of_v<KeyInfoBase, key_type>, "Key type must inherit from KeyInfoBase.");
+    static_assert(std::is_base_of_v<LoginInfoBase, login_info_type>, "Login info type must inherit from LoginInfoBase");
+    static_assert(std::is_base_of_v<CommonInfoBase, common_info_type>, "Common info type must inherit from CommonInfoBase");
 public:
     virtual ~ICard() = default;
 public:
