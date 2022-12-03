@@ -29,6 +29,7 @@ private:
     void goBack(const AManager&);
     void goBack(const IAdministrator&);
 
+
 signals:
     void changePage(int);
 private slots:

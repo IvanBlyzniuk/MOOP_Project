@@ -15,6 +15,8 @@ private:
     const KeyInfoBase&    do_key_info()        const noexcept override;
     const LoginInfoBase&  do_login_info()      const noexcept override;
     const CommonInfoBase& do_common_info()     const noexcept override;
+    const text_type& do_owner_firstname()      const noexcept override;
+    const text_type& do_owner_lastname()       const noexcept override;
 private:
     bool check_input() const noexcept;
 private:
@@ -71,6 +73,14 @@ inline auto DebitCard::check_input() const noexcept -> bool
     return card_balance() >= 0;
 }
 
+inline auto DebitCard::do_owner_firstname() const noexcept -> const text_type&
+{
+    return _info.get_owner_firstname();
+}
+inline auto DebitCard::do_owner_lastname() const noexcept -> const text_type&
+{
+    return _info.get_owner_lastname();
+}
 
 
 #endif // DEBITCARD_H

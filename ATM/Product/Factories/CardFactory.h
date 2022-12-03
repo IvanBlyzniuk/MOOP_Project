@@ -7,7 +7,7 @@
 
 using ICardFactory = IFactory<ICard>;
 
-template<std::derived_from<ICardFactory::product_abstract_type> CardType>
+template<typename CardType>
 class CardFactory : public ICardFactory
 {
 public:
