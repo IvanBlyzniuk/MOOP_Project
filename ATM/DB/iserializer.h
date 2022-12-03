@@ -28,7 +28,7 @@ public:
     out_product_ptr<AManager> deserializeManager(/*key params*/) const;
 private:
     virtual void do_serialize(in_product_ptr<DebitCard>)            const = 0;
-    virtual void do_serialize(in_product_ptr<CreditCard>)             const = 0;
+    virtual void do_serialize(in_product_ptr<CreditCard>)            const = 0;
     virtual void do_serialize(in_product_ptr<AManager>)              const = 0;
     virtual bool do_exists(const product_info<ICard>&)      const noexcept = 0;
     virtual bool do_exists(const product_info<AManager>&)   const noexcept = 0;

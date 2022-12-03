@@ -4,7 +4,7 @@
 #include "Product/Cards/icard.h"
 #include <QWidget>
 
-#include <Registrations/aregistrator.h>s
+#include <Registrations/aregistrator.h>
 
 namespace Ui {
 class DefaultManagerWidget;

@@ -24,8 +24,6 @@ private:
     static const balance_type s_dflt_credit_limit;
 };
 
-const CreditCard::balance_type CreditCard::s_dflt_credit_limit = 0;
-
 inline CreditCard::CreditCard
 (
     const info_type& info,

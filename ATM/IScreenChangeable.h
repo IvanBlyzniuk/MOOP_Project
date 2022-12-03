@@ -1,7 +1,7 @@
 #ifndef ISCREENCHANGEABLE_H
 #define ISCREENCHANGEABLE_H
 
-#include "qtmetamacros.h"
+//#include "qtmetamacros.h"
 
 #include <QWidget>
 class IScreenChangeable
