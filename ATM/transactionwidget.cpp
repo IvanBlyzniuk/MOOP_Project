@@ -62,7 +62,7 @@ void TransactionWidget::on_sendTransactionButton_clicked()
             QString cardNum = ui->cardNumField->text();
             ui->infoField->setText(tr.sendTransaction(sum,cardNum)->toMessage());
         }
-        catch (DoesntExistException)
+        catch (const DoesntExistException&)
         {
             ui->infoField->setText("Card number of the receiver is not valid.");
         }
