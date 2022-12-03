@@ -7,7 +7,11 @@ namespace Ui {
 class ManagerLoginWidget;
 }
 class AManager;
-class IAdministrator;
+class AAdministrator;
+template<typename T>
+class ILoginAgent;
+
+class ISerializer;
 
 class ManagerLoginWidget : public QWidget
 {
@@ -19,8 +23,11 @@ public:
 
 private:
     Ui::ManagerLoginWidget *ui;
-    void login(const AManager&);
-    void login(const IAdministrator&);
+    std::shared_ptr<ILoginAgent<AManager>> loginAgent;
+    std::shared_ptr<ISerializer> serializer;
+    void login(std::shared_ptr<AManager>);
+    void login(std::shared_ptr<AAdministrator>);
+    void makeManagerLogin();
 signals:
     void changePage(int);
     void sendManager(std::shared_ptr<AManager>);
