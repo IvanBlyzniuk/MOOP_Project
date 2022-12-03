@@ -27,14 +27,19 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::login()
 {
+    if(!ui->cardNumField->text().isEmpty() && !ui->pinField->text().isEmpty())
+    {
     try
     {
     //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
-        changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
+        std::shared_ptr<ICard> card = loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+        emit sendCard(card);
+        emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
     }
     catch(...)
     {
         ui->infoField->setText("Login data is incorrect!");
+    }
     }
 }
 
@@ -44,5 +49,11 @@ void LoginWidget::login()
 void LoginWidget::on_loginButton_clicked()
 {
     login();
+}
+
+
+void LoginWidget::on_privilegedButton_clicked()
+{
+    changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
 }
 

@@ -12,6 +12,18 @@ DefaultManagerWidget::~DefaultManagerWidget()
 {
     delete ui;
 }
+
+void DefaultManagerWidget::goBack(const AManager &)
+{
+    emit changePage(static_cast<int>(Widgets::CARD_LOGIN));
+}
+
+void DefaultManagerWidget::goBack(const IAdministrator &)
+{
+    emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
+}
+
+
 //registerC(){
 //    if(checkbox){
 //        registrator = new CardRegistrator<DebitCard>(new CardFactory<DebitCard>());
@@ -21,3 +33,14 @@ DefaultManagerWidget::~DefaultManagerWidget()
 //    }
 //    registrator.
 //}
+
+void DefaultManagerWidget::on_backButton_clicked()
+{
+
+}
+
+void DefaultManagerWidget::setCurrentManager(std::shared_ptr<AManager> manager)
+{
+    currentManager = manager;
+}
+

@@ -6,6 +6,7 @@
 class InputException : public QException
 {
 public:
+
     InputException(const char* const message) : _message(message)
     {
     }

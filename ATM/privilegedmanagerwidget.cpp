@@ -12,3 +12,8 @@ PrivilegedManagerWidget::~PrivilegedManagerWidget()
 {
     delete ui;
 }
+
+void PrivilegedManagerWidget::setCurrentManager(std::shared_ptr<AManager> manager)
+{
+    currentManager = manager;
+}

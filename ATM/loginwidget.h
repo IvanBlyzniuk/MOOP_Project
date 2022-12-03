@@ -27,6 +27,8 @@ public:
 private slots:
     void on_loginButton_clicked();
 
+    void on_privilegedButton_clicked();
+
 private:
     Ui::LoginWidget *ui;
     std::shared_ptr<ILoginAgent<ICard>> loginAgent;
@@ -35,7 +37,7 @@ private:
 
 signals:
     void changePage(int);
-    void sendUserSignal(const QString&);
+    void sendCard(std::shared_ptr<ICard>);
 
 };
 

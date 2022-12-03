@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>970</width>
-    <height>444</height>
+    <width>1385</width>
+    <height>813</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,13 +37,24 @@
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Old PIN</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="oldPinField"/>
+      <widget class="QLineEdit" name="oldPinField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="2" column="1">
       <spacer name="verticalSpacer_5">
@@ -60,13 +71,24 @@
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>New PIN</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="newPinField"/>
+      <widget class="QLineEdit" name="newPinField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="4" column="1">
       <spacer name="verticalSpacer_4">
@@ -83,6 +105,17 @@
      </item>
      <item row="6" column="0">
       <widget class="QPushButton" name="goBackButton">
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Back</string>
        </property>
@@ -90,6 +123,11 @@
      </item>
      <item row="6" column="1">
       <widget class="QPushButton" name="changePinButton">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Change PIN</string>
        </property>
@@ -120,6 +158,11 @@
        <width>200</width>
        <height>400</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
     </widget>
    </item>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>897</width>
-    <height>404</height>
+    <width>1359</width>
+    <height>801</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,13 +43,24 @@
          <height>0</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Login</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="loginField"/>
+      <widget class="QLineEdit" name="loginField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="2" column="1">
       <spacer name="verticalSpacer">
@@ -66,18 +77,34 @@
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Password</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="passwordField"/>
+      <widget class="QLineEdit" name="passwordField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="4" column="0">
       <widget class="QCheckBox" name="makePrivilegedButton">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
        </property>
        <property name="text">
         <string>Make privileged</string>
@@ -116,33 +143,75 @@
        </property>
       </spacer>
      </item>
-     <item row="13" column="0">
+     <item row="6" column="0">
+      <widget class="QLabel" name="pressToRedactManagersLabel">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Press to work with cards</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QPushButton" name="redactorModeButton">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Card management</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
       <widget class="QPushButton" name="backButton">
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Back</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="1">
-      <widget class="QPushButton" name="loginButton">
-       <property name="text">
-        <string>Login</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0">
-      <widget class="QLabel" name="pressToRedactManagersLabel">
-       <property name="text">
-        <string>Press to redact managers</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="1">
-      <widget class="QPushButton" name="redactorModeButton">
-       <property name="text">
-        <string>Redact managers</string>
-       </property>
-      </widget>
+     <item row="7" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="deleteManagerButton">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Delete Manager</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="addManagerButton">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add Manager</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -169,6 +238,11 @@
        <width>200</width>
        <height>400</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
     </widget>
    </item>

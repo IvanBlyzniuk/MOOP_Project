@@ -10,8 +10,13 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+
+    Product/Managers/amanager.cpp \
+    Transactions/transaction.cpp \
+    Transactions/transactionmanager.cpp \
     Product/Managers/privilegedmanager.cpp \
     Product/Managers/standardmanager.cpp \
+
 	db.cpp \
     changepinwidget.cpp \
     defaultmanagerwidget.cpp \
@@ -22,7 +27,6 @@ SOURCES += \
     managerloginwidget.cpp \
     privilegedmanagerwidget.cpp \
     putwithdrawwidget.cpp \
-    testloggedinwidget.cpp \
     transactionwidget.cpp
 
 HEADERS += \
@@ -52,6 +56,8 @@ HEADERS += \
     Registrations/RegistratorTypedefs.h \
     Registrations/aregistrator.h \
     Registrations/cardregistrator.h \
+    Transactions/transaction.h \
+    Transactions/transactionmanager.h \
 	db.h \
     changepinwidget.h \
     defaultmanagerwidget.h \
@@ -61,7 +67,6 @@ HEADERS += \
     managerloginwidget.h \
     privilegedmanagerwidget.h \
     putwithdrawwidget.h \
-    testloggedinwidget.h \
     transactionwidget.h
 
 FORMS += \
@@ -73,7 +78,6 @@ FORMS += \
     managerloginwidget.ui \
     privilegedmanagerwidget.ui \
     putwithdrawwidget.ui \
-    testloggedinwidget.ui \
     transactionwidget.ui
 
 # Default rules for deployment.

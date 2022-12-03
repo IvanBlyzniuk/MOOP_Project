@@ -6,6 +6,8 @@
 namespace Ui {
 class MainOptionsWidget;
 }
+class ICard;
+
 
 class MainOptionsWidget : public QWidget
 {
@@ -17,10 +19,17 @@ public:
 
 private:
     Ui::MainOptionsWidget *ui;
+    std::shared_ptr<ICard> currentCard;
+
 signals:
     void changePage(int);
 private slots:
     void on_exitButton_clicked();
+    void setCurrentCard(std::shared_ptr<ICard>);
+    void on_withdrawPutButton_clicked();
+    void on_sendMoneyButton_clicked();
+    void on_changePinButton_clicked();
+    void on_checkBalanceButton_clicked();
 };
 
 #endif // MAINOPTIONSWIDGET_H

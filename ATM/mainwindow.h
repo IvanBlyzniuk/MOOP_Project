@@ -9,7 +9,7 @@
 #include "managerloginwidget.h"
 #include "privilegedmanagerwidget.h"
 #include "putwithdrawwidget.h"
-#include "testloggedinwidget.h"
+#include "transactionwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,7 +36,10 @@ private:
     MainOptionsWidget* mainOptionsW;
     PutWithdrawWidget* putWithdrawW;
     ChangePinWidget* changePinW;
-    TestLoggedInWidget* test;
+    TransactionWidget* transactionW;
 
+private:
+    void connectSlots();
+    void putWidgets();
 };
 #endif // MAINWINDOW_H

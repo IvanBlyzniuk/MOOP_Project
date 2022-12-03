@@ -12,3 +12,9 @@ ManagerLoginWidget::~ManagerLoginWidget()
 {
     delete ui;
 }
+
+void ManagerLoginWidget::on_backButton_clicked()
+{
+    emit changePage(static_cast<int>(Widgets::CARD_LOGIN));
+}
+
