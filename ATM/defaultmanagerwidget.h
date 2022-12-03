@@ -1,14 +1,18 @@
 #ifndef DEFAULTMANAGERWIDGET_H
 #define DEFAULTMANAGERWIDGET_H
-
+#include <Enums/widgets.h>
 #include "Product/Cards/icard.h"
 #include <QWidget>
+#include <Registrations/aregistrator.h>
 
-#include <Registrations/aregistrator.h>s
+
 
 namespace Ui {
 class DefaultManagerWidget;
 }
+
+class AManager;
+class IAdministrator;
 
 class DefaultManagerWidget : public QWidget
 {
@@ -20,9 +24,16 @@ public:
 
 private:
     Ui::DefaultManagerWidget *ui;
-    std::shared_ptr<ARegistrator<typename ICard>> registrator;
+    std::shared_ptr<ARegistrator<ICard>> registrator;
+    std::shared_ptr<AManager> currentManager;
+    void goBack(const AManager&);
+    void goBack(const IAdministrator&);
+
 signals:
     void changePage(int);
+private slots:
+    void on_backButton_clicked();
+    void setCurrentManager(std::shared_ptr<AManager>);
 };
 
 #endif // DEFAULTMANAGERWIDGET_H

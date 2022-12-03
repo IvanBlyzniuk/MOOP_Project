@@ -7,6 +7,8 @@ namespace Ui {
 class PrivilegedManagerWidget;
 }
 
+class AManager;
+
 class PrivilegedManagerWidget : public QWidget
 {
     Q_OBJECT
@@ -17,8 +19,12 @@ public:
 
 private:
     Ui::PrivilegedManagerWidget *ui;
+    std::shared_ptr<AManager> currentManager;
 signals:
     void changePage(int);
+
+private slots:
+    void setCurrentManager(std::shared_ptr<AManager>);
 };
 
 #endif // PRIVILEGEDMANAGERWIDGET_H

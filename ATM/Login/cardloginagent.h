@@ -23,15 +23,9 @@ CardLoginAgent::CardLoginAgent(const std::shared_ptr<ISerializer> s) : serialize
 
 inline std::shared_ptr<ICard> CardLoginAgent::do_login(const LoginParams<ICard> & params) const
 {
-    try
-    {
-        std::shared_ptr<ICard> card = serializer -> deserializeCard(/*params*/);
-        return card;
-    }
-    catch (...)
-    {
-        throw;
-    }
+    std::shared_ptr<ICard> card = serializer -> deserializeCard(/*params*/);
+    return card;
+
 }
 
 

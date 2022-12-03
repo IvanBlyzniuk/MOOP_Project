@@ -11,5 +11,6 @@ enum class Widgets
     MAIN_OPTIONS,
     PUT_WITHDRAW,
     CHANGE_PIN,
+    TRANSACTIONS,
 };
 #endif // WIDGETS_H

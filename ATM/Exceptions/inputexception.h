@@ -7,7 +7,7 @@ class InputException : public std::exception
 {
 public:
     InputException(const char* const message) :
-        std::exception(message)
+        std::exception()
     {
     }
 };
