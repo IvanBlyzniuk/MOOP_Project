@@ -10,13 +10,10 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-
-    Product/Managers/amanager.cpp \
     Transactions/transaction.cpp \
     Transactions/transactionmanager.cpp \
     Product/Managers/privilegedmanager.cpp \
     Product/Managers/standardmanager.cpp \
-
 	db.cpp \
     changepinwidget.cpp \
     defaultmanagerwidget.cpp \
