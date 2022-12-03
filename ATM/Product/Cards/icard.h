@@ -2,6 +2,7 @@
 #define ICARD_H
 #include <QString>
 #include "Product/ProductInfo.h"
+#include "Exceptions/NotEnoughMoneyException.h"
 
 class ICard;
 
@@ -65,8 +66,8 @@ public:
     const text_type&    get_pin() const noexcept { return get_login_info().get_pin(); }
     const text_type&    get_owner_firstname() const noexcept { return _owner_firstname; }
     const text_type&    get_owner_lastname() const noexcept { return _owner_lastname; }
-    const balance_type  get_balance() const noexcept { return _balance; }
-    void set_balance(const balance_type bal) { _balance = bal; }
+    balance_type  get_balance() const noexcept { return _balance; }
+    void set_balance(const balance_type bal) {_balance = bal;}
 private:
     LoginParams<ICard> _login_info;
     text_type _owner_firstname;
