@@ -31,6 +31,7 @@ HEADERS += \
     Enums/widgets.h \
     Exceptions/AlreadyExistsException.h \
     Exceptions/DoesntExistException.h \
+    Exceptions/NotEnoughMoneyException.h \
     Exceptions/inputexception.h \
     Login/cardloginagent.h \
     Login/iloginagent.h \
