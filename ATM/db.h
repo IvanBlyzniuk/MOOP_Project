@@ -9,7 +9,10 @@
 #include "Product/Factories/CardFactory.h"
 #include "Product/Factories/ManagerFactory.h"
 #include "Product/Factories/AdministratorFactory.h"
+#include "Product/Managers/StandardManager.h"
+#include "Product/Managers/privilegedmanager.h"
 #include <memory>
+
 class DB
 {
 public:
@@ -32,7 +35,7 @@ private:
     std::unique_ptr<ICard> deserializeCard(const QString& number,const QString& pin) const;
     std::unique_ptr<AManager> deserializeManager(const QString& login,const QString& password) const;
 
-    void changeBalance(const QString&,double) const;
+    void changeBalance(const QString&,float) const;
 };
 
 #endif // DB_H

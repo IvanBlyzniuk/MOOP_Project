@@ -9,7 +9,8 @@ public:
     CreditCard(const common_info_type&, const balance_type = s_dflt_credit_limit);
     ~CreditCard() override = default;
 public:
-    balance_type credit_limit() const;
+    balance_type credit_limit() const noexcept;
+    void set_credit_limit(const balance_type);
 private:
     const text_type& do_card_number()          const noexcept override;
     const text_type& do_card_pincode()         const noexcept override;
@@ -18,13 +19,15 @@ private:
     const KeyInfoBase&    do_key_info()        const noexcept override;
     const LoginInfoBase&  do_login_info()      const noexcept override;
     const CommonInfoBase& do_common_info()     const noexcept override;
+    const text_type& do_owner_firstname()      const noexcept override;
+    const text_type& do_owner_lastname()       const noexcept override;
 private:
     bool check_input() const noexcept;
 private:
     common_info_type _info;
     balance_type _credit_limit;
 private:
-    static const balance_type s_dflt_credit_limit;
+    static constexpr balance_type s_dflt_credit_limit = 0;
 };
 
 inline CreditCard::CreditCard
@@ -41,9 +44,16 @@ inline CreditCard::CreditCard
     }
 }
 
-inline auto CreditCard::credit_limit() const -> balance_type
+inline auto CreditCard::credit_limit() const noexcept -> balance_type
 {
     return _credit_limit;
+}
+
+inline void CreditCard::set_credit_limit(const balance_type credit_limit)
+{
+    if (credit_limit < 0)
+        throw InputException("Negative credit limit");
+    _credit_limit = credit_limit;
 }
 
 inline auto CreditCard::do_card_number() const noexcept -> const text_type&
@@ -85,6 +95,15 @@ inline auto CreditCard::check_input() const noexcept -> bool
 {
     //TODO text input checking
     return card_balance() >= 0;
+}
+
+inline auto CreditCard::do_owner_firstname() const noexcept -> const text_type&
+{
+    return _info.get_owner_firstname();
+}
+inline auto CreditCard::do_owner_lastname() const noexcept -> const text_type&
+{
+    return _info.get_owner_lastname();
 }
 
 #endif // CREDITCARD_H

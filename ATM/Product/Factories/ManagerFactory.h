@@ -5,7 +5,7 @@
 
 using IManagerFactory = IFactory<AManager>;
 
-template<std::derived_from<IManagerFactory::product_abstract_type> ManagerType>
+template<typename ManagerType>
 class ManagerFactory : public IManagerFactory
 {
 public:

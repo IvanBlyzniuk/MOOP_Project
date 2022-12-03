@@ -28,6 +28,8 @@ SOURCES += \
 HEADERS += \
     DB/iserializer.h \
     Enums/widgets.h \
+    Exceptions/AlreadyExistsException.h \
+    Exceptions/DoesntExistException.h \
     Exceptions/inputexception.h \
     Login/cardloginagent.h \
     Login/iloginagent.h \

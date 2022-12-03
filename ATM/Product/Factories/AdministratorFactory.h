@@ -5,7 +5,7 @@
 
 using IAdministratorFactory = IFactory<AAdministrator>;
 
-template<std::derived_from<IAdministratorFactory::product_abstract_type> AdminType>
+template<typename AdminType>
 class AdministratorFactory : public IAdministratorFactory
 {
 public:

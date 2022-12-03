@@ -1,5 +1,6 @@
 #include "db.h"
-
+#include "Exceptions/AlreadyExistsException.h"
+#include "Exceptions/DoesntExistException.h"
 DB::DB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
@@ -28,8 +29,8 @@ void DB::serialize(const DebitCard& card) const
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
-        //query.bindValue(":firstname",card.owner_firstname);
-        //query.bindValue(":lastname",card.owner_lastname);
+        query.bindValue(":firstname",card.owner_firstname());
+        query.bindValue(":lastname",card.owner_lastname());
         query.exec();
     }
     else
@@ -38,8 +39,8 @@ void DB::serialize(const DebitCard& card) const
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
-        //query.bindValue(":firstname",card.owner_firstname);
-        //query.bindValue(":lastname",card.owner_lastname);
+        query.bindValue(":firstname",card.owner_firstname());
+        query.bindValue(":lastname",card.owner_lastname());
         query.exec();
     }
 }
@@ -55,8 +56,8 @@ void DB::serialize(const CreditCard& card) const
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
-        //query.bindValue(":firstname",card.owner_firstname);
-        //query.bindValue(":lastname",card.owner_lastname);
+        query.bindValue(":firstname",card.owner_firstname());
+        query.bindValue(":lastname",card.owner_lastname());
         query.bindValue(":credit_limit",card.credit_limit());
         query.exec();
     }
@@ -66,8 +67,8 @@ void DB::serialize(const CreditCard& card) const
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
-        //query.bindValue(":firstname",card.owner_firstname);
-        //query.bindValue(":lastname",card.owner_lastname);
+        query.bindValue(":firstname",card.owner_firstname());
+        query.bindValue(":lastname",card.owner_lastname());
         query.bindValue(":credit_limit",card.credit_limit());
         query.exec();
     }
@@ -87,8 +88,7 @@ void DB::serialize(const AManager& manager) const
     }
     else
     {
-        qDebug() << "Manager already exists";
-        //throw new QException();
+        throw AlreadyExistsException("Specified manager already exists");
     }
 }
 void DB::serialize(const AAdministrator& admin) const
@@ -106,8 +106,7 @@ void DB::serialize(const AAdministrator& admin) const
     }
     else
     {
-        qDebug() << "Manager already exists";
-        //throw new QException();
+        throw AlreadyExistsException("Specified manager already exists");
     }
 }
 bool DB::existstCard(const QString& number) const
@@ -142,6 +141,8 @@ bool DB::existstManager(const QString& login) const
 }
 void DB::removeCard(const QString& number) const
 {
+    if (!existstCard(number))
+        throw DoesntExistException("Specified card doesn't exist");
     QSqlQuery query;
     query.prepare("DELETE FROM debit_cards WHERE number=(:number)");
     query.bindValue(":number",number);
@@ -152,6 +153,8 @@ void DB::removeCard(const QString& number) const
 }
 void DB::removeManager(const QString& login) const
 {
+    if(!existstManager(login))
+        throw DoesntExistException("Specified manager doesn't exist");
     QSqlQuery query;
     query.prepare("DELETE FROM managers WHERE login=(:login)");
     query.bindValue(":login",login);
@@ -174,8 +177,8 @@ std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& 
         QString first_name = query.value(rec.indexOf("firstname")).toString();
         QString last_name = query.value(rec.indexOf("lastname")).toString();
         CardFactory<DebitCard> factory;
-        return factory.create_product({number,pin,first_name,last_name,balance});
-        qDebug() << "Deserialized debit card: num=" << number << " pin=" << pin << " balance=" << balance <<" firstname=" << first_name;
+        std::unique_ptr<ICard> uptr = factory.create_product(ProductCommonInfo<ICard>(number,pin,first_name,last_name,balance));
+        return std::unique_ptr<ICard>(dynamic_cast<ICard*>(uptr.release()));
     }
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number) AND pin=(:pin)");
     query.bindValue(":number",number);
@@ -189,16 +192,14 @@ std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& 
         QString last_name = query.value(rec.indexOf("lastname")).toString();
         float credit_limit = query.value(rec.indexOf("credit_limit")).toFloat();
         CardFactory<CreditCard> factory;
-        auto uicardPtr = factory.createProduct({number,pin,first_name,last_name,balance});
+        std::unique_ptr<ICard> uicardPtr = factory.create_product({number,pin,first_name,last_name,balance});
         ICard * icardPtr = uicardPtr.release();
         CreditCard * cardPtr = dynamic_cast<CreditCard*>(icardPtr);
-        std::unique_ptr<CreditCard> res = std::make_unique<CreditCard>(cardPtr);
-        //res->set_credit_limit(credit_limit);
+        std::unique_ptr<CreditCard> res(cardPtr);
+        res->set_credit_limit(credit_limit);
         return res;
-        qDebug() << "Deserialized credit card: num=" << number << " pin=" << pin << " balance=" << balance <<" firstname=" << first_name << " limit="<<credit_limit;
     }
-    //throw new QException();
-    return nullptr;
+    throw DoesntExistException("Specified card doesn't exist");
 }
 std::unique_ptr<AManager> DB::deserializeManager(const QString& login,const QString& password) const
 {
@@ -209,10 +210,8 @@ std::unique_ptr<AManager> DB::deserializeManager(const QString& login,const QStr
     query.exec();
     if(query.first())
     {
-        ManagerFactory<AManager> factory;
-        return factory.create_product({login,password});
-        //return StandardManager(login, password);
-        qDebug() << "Deserialized manager: login=" << login << " password=" << password;
+        ManagerFactory<StandardManager> factory;
+        return factory.create_product(ProductCommonInfo<AManager>(login,password));
     }
 
     query.prepare("SELECT * FROM privileged_managers WHERE login=(:login) AND password=(:password)");
@@ -224,18 +223,19 @@ std::unique_ptr<AManager> DB::deserializeManager(const QString& login,const QStr
         QSqlRecord rec = query.record();
         QString login = query.value(rec.indexOf("login")).toString();
         QString password = query.value(rec.indexOf("password")).toString();
-        AdministratorFactory<AAdministrator> factory;
-        std::unique_ptr<AAdministrator> uptr = factory.create_product({login,password});
-        //return std::make_unique(dynamic_cast<AManager*>(uptr.release()));
-        qDebug() << "Deserialized priviliged_manager: login=" << login << " password=" << password;
+        AdministratorFactory<PrivilegedManager> factory;
+        std::unique_ptr<AAdministrator> uptr = factory.create_product(ProductCommonInfo<AAdministrator>(login,password));
+        return std::unique_ptr<AManager>(dynamic_cast<AManager*>(uptr.release()));
     }
-    return nullptr;
+    throw DoesntExistException("Specified manager doesn't exist");
 }
 
-void DB::changeBalance(const QString& number,double amount) const
+void DB::changeBalance(const QString& number,float amount) const
 {
+    if(!existstCard(number))
+        throw DoesntExistException("Specified card doesn't exist");
     if(amount < 0)
-        throw new QException();
+        throw InputException("Negative transaction sum");
     QSqlQuery query;
     query.prepare("UPDATE debit_cards SET balance = balance + (:amount) WHERE number = (:number)");
     query.bindValue(":amount",amount);

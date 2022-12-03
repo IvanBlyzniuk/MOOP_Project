@@ -20,7 +20,7 @@ public:
 
 private:
     Ui::DefaultManagerWidget *ui;
-    std::shared_ptr<ARegistrator<typename ICard>> registrator;
+    std::shared_ptr<ARegistrator<ICard>> registrator;
 signals:
     void changePage(int);
 };
