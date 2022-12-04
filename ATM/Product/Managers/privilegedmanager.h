@@ -6,16 +6,16 @@
 class PrivilegedManager : public AAdministrator
 {
 public:
-    explicit PrivilegedManager(const common_info_type&) noexcept;
+    PrivilegedManager(const common_info_type&) noexcept;
 private:
-    virtual const text_type& do_login() const noexcept override;
-    virtual const text_type& do_password() const noexcept override;
-    virtual void do_set_login(const text_type&) override;
-    virtual void do_set_password(const text_type&) override;
-    virtual void do_add_card(card_ptr, card_reg_ptr) const override;
-    virtual void do_rem_card(const card_key_type&, card_reg_ptr) const override;
-    virtual void do_add_manager(manager_ptr, manager_reg_ptr) const override;
-    virtual void do_rem_manager(const key_type&, manager_reg_ptr) const override;
+    const text_type& do_login() const noexcept override;
+    const text_type& do_password() const noexcept override;
+    void do_set_login(const text_type&) override;
+    void do_set_password(const text_type&) override;
+    void do_add_card(card_ptr, card_reg_ptr) const override;
+    void do_rem_card(const card_key_type&, card_reg_ptr) const override;
+    void do_add_manager(manager_ptr, manager_reg_ptr) const override;
+    void do_rem_manager(const key_type&, manager_reg_ptr) const override;
     const KeyInfoBase&    do_key_info()        const noexcept override;
     const LoginInfoBase&  do_login_info()      const noexcept override;
     const CommonInfoBase& do_common_info()     const noexcept override;

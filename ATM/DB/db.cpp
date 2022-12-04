@@ -32,6 +32,7 @@ DB::~DB()
 
 void DB::do_serialize(const DebitCard& card) const
 {
+    //qDebug() << "Serialize debitCard";
     QSqlQuery query;
     query.prepare("SELECT * FROM debit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());
@@ -58,6 +59,7 @@ void DB::do_serialize(const DebitCard& card) const
 }
 void DB::do_serialize(const CreditCard& card) const
 {
+    //qDebug() << "Serialize creditCard";
     QSqlQuery query;
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());

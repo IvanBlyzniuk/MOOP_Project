@@ -12,7 +12,7 @@ class DefaultManagerWidget;
 }
 
 class AManager;
-class IAdministrator;
+class AAdministrator;
 class ISerializer;
 
 class DefaultManagerWidget : public QWidget
@@ -27,8 +27,8 @@ private:
     Ui::DefaultManagerWidget *ui;
     std::shared_ptr<ARegistrator<ICard>> registrator;
     std::shared_ptr<AManager> currentManager;
-    void goBack(const AManager&);
-    void goBack(const IAdministrator&);
+    void goBack(AManager&);
+    //void goBack(const AAdministrator&);
     bool checkAdd();
     bool checkDelete();
 

@@ -1,9 +1,11 @@
 #include "defaultmanagerwidget.h"
 #include "ui_defaultmanagerwidget.h"
 #include "Exceptions/AlreadyExistsException.h"
+#include "Exceptions/DoesntExistException.h"
 #include <QRegularExpressionValidator>
 #include "Product/Factories/CardFactory.h"
 #include "Registrations/cardregistrator.h"
+#include "Product/Managers/privilegedmanager.h"
 
 DefaultManagerWidget::DefaultManagerWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
@@ -22,15 +24,23 @@ DefaultManagerWidget::~DefaultManagerWidget()
     delete ui;
 }
 
-void DefaultManagerWidget::goBack(const AManager &)
+void DefaultManagerWidget::goBack(AManager& manager)
 {
-    emit changePage(static_cast<int>(Widgets::CARD_LOGIN));
+    try
+    {
+        dynamic_cast<PrivilegedManager&>(manager);
+        emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
+    }
+    catch (const std::bad_cast&)
+    {
+        emit changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
+    }
 }
 
-void DefaultManagerWidget::goBack(const IAdministrator &)
-{
-    emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
-}
+//void DefaultManagerWidget::goBack(const AAdministrator &)
+//{
+//    emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
+//}
 
 bool DefaultManagerWidget::checkAdd()
 {
@@ -81,7 +91,7 @@ void DefaultManagerWidget::on_deleteCardButton_clicked()
     {
         registrator->remove_registration({ui->cardNumInputField->text()});
     }
-    catch(...)
+    catch(const DoesntExistException&)
     {
         ui->infoField->setText("Specified card doesn't exist.");
     }
@@ -121,7 +131,7 @@ void DefaultManagerWidget::on_addCardButton_clicked()
         }
         registrator->make_registration(*new_card);
     }
-    catch (AlreadyExistsException e)
+    catch (const AlreadyExistsException&)
     {
         ui->infoField->setText("Specified card alredy exist.");
     }

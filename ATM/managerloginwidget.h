@@ -2,7 +2,7 @@
 #define MANAGERLOGINWIDGET_H
 #include <Enums/widgets.h>
 #include <QWidget>
-
+//#include <Product/Managers/privilegedmanager.h>
 namespace Ui {
 class ManagerLoginWidget;
 }
@@ -10,7 +10,8 @@ class AManager;
 class AAdministrator;
 template<typename T>
 class ILoginAgent;
-
+class StandardManager;
+class PrivilegedManager;
 class ISerializer;
 
 class ManagerLoginWidget : public QWidget
@@ -24,8 +25,8 @@ public:
 private:
     Ui::ManagerLoginWidget *ui;
     std::shared_ptr<ILoginAgent<AManager>> loginAgent;
-    void login(const AManager&);
-    void login(const AAdministrator&);
+    void login(AManager&);
+    //void login(const PriviligedManager&);
     void makeManagerLogin();
 signals:
     void changePage(int);

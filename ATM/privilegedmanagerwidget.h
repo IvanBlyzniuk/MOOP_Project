@@ -30,6 +30,9 @@ signals:
 private slots:
     void setCurrentManager(std::shared_ptr<AManager>);
     void on_deleteManagerButton_clicked();
+    void on_addManagerButton_clicked();
+    void on_backButton_clicked();
+    void on_redactorModeButton_clicked();
 };
 
 #endif // PRIVILEGEDMANAGERWIDGET_H
