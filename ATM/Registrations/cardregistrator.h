@@ -16,20 +16,16 @@ CardRegistrator<CardType> ::
 CardRegTemplate \
 auto CardRegistrator<CardType> ::
 
-//using ICardRegistrator = ARegistrator<ICard>;
-
 CardRegTemplate
 class CardRegistrator : public ICardRegistrator
 {
 public:
-    template<typename T>
-    using ptr = std::shared_ptr<T>;
     using product_type = CardType;
-    using serializer_ptr = ptr<ISerializer>;
+    using serializer_ptr = std::shared_ptr<ISerializer>;
 public:
     CardRegistrator(serializer_ptr) noexcept;
 private:
-    void do_make_registration(const product_abstract_type&) const override;
+    void do_make_registration(product_ptr) const override;
     void do_remove_registration(const product_key_type&) const override;
     bool do_can_be_registered(const product_key_type&) const noexcept override;
 private:
@@ -42,28 +38,19 @@ CardRegMember CardRegistrator(serializer_ptr db) noexcept :
 
 }
 
-CardRegMethod do_make_registration(const product_abstract_type& info) const -> void
+CardRegMethod do_make_registration(product_ptr info) const -> void
 {
-    //if(can_be_registered())
-    //{
-
-        //_db->serialize()
-    //}
-    //else throw
+    _db->serialize(info);
 }
 
 CardRegMethod do_remove_registration(const product_key_type& info) const -> void
 {
-    //if (can_be_registered(info))
-    //{
-        //_db->serialize()
-    //}
-    //else throw
+    _db->remove_card(info);
 }
 
 CardRegMethod do_can_be_registered(const product_key_type& info) const noexcept -> bool
 {
-    return false;//!_db->exists(info);
+    return !_db->exists_card(info);
 }
 
 using DebitCardRegistrator = CardRegistrator<DebitCard>;

@@ -54,6 +54,7 @@ HEADERS += \
     Registrations/RegistratorTypedefs.h \
     Registrations/aregistrator.h \
     Registrations/cardregistrator.h \
+    Registrations/managerregistrator.h \
     Transactions/transaction.h \
     Transactions/transactionmanager.h \
     changepinwidget.h \

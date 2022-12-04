@@ -5,66 +5,65 @@
 class AAdministrator;
 
 template<>
-class ProductKeyInfo<AAdministrator> : public KeyInfoBase
+class ProductKeyInfo<AAdministrator> : public ProductKeyInfo<AManager>
 {
-public:
-    using key_type = ProductKeyInfo<AAdministrator>;
-    using login_info_type = LoginParams<AAdministrator>;
-    using text_type = QString;
+//public:
+//    using key_type = ProductKeyInfo<AAdministrator>;
+//    using login_info_type = LoginParams<AAdministrator>;
+//    using text_type = QString;
 public:
     ProductKeyInfo(const text_type& login) noexcept :
-        _login(login)
+        ProductKeyInfo<AManager>(login)
     {}
-public:
-    const text_type& get_login() const noexcept { return _login; }
-    void set_login(const text_type& login) noexcept { _login = login; }
-private:
-    text_type _login;
+//public:
+//    const text_type& get_login() const noexcept { return _login; }
+//    void set_login(const text_type& login) noexcept { _login = login; }
+//private:
+//    text_type _login;
 };
 
 template<>
-class LoginParams<AAdministrator> : public LoginInfoBase
+class LoginParams<AAdministrator> : public LoginParams<AManager>
 {
-public:
-    using key_type = ProductKeyInfo<AAdministrator>;
-    using login_info_type = LoginParams<AAdministrator>;
-    using text_type = ProductKeyInfo<AAdministrator>::text_type;
+//public:
+//    using key_type = ProductKeyInfo<AAdministrator>;
+//    using login_info_type = LoginParams<AAdministrator>;
+//    using text_type = ProductKeyInfo<AAdministrator>::text_type;
 public:
     LoginParams(const text_type& login, const text_type& password) noexcept :
-        _key(login),
-        _password(password)
+        LoginParams<AManager>(login, password)
     {}
-public:
-    const key_type& get_key() const noexcept { return _key; }
-    const text_type& get_login() const noexcept { return get_key().get_login(); }
-    const text_type& get_password() const noexcept { return _password; }
-    void set_login(const text_type& l) { _key.set_login(l); }
-    void set_password(const text_type& p) { _password = p; }
-private:
-    key_type _key;
-    text_type _password;
+//public:
+//    const key_type& get_key() const noexcept { return _key; }
+//    const text_type& get_login() const noexcept { return get_key().get_login(); }
+//    const text_type& get_password() const noexcept { return _password; }
+//    void set_login(const text_type& l) { _key.set_login(l); }
+//    void set_password(const text_type& p) { _password = p; }
+//private:
+//    key_type _key;
+//    text_type _password;
 };
 
 template<>
-class ProductCommonInfo <AAdministrator> : public CommonInfoBase
+class ProductCommonInfo <AAdministrator> : public ProductCommonInfo <AManager>
 {
-public:
-    using key_type = ProductKeyInfo<AAdministrator>;
-    using login_info_type = LoginParams<AAdministrator>;
-    using text_type = QString;
+//public:
+//    using key_type = ProductKeyInfo<AAdministrator>;
+//    using login_info_type = LoginParams<AAdministrator>;
+//    using text_type = QString;
 public:
     ProductCommonInfo(const text_type& login, const text_type& password) noexcept :
-        _login_info(login, password)
+        ProductCommonInfo<AManager>(login, password)
     {}
-public:
-    const login_info_type& get_login_info() const noexcept { return _login_info; }
-    const key_type& get_key() const noexcept { return get_login_info().get_key(); }
-    const text_type& get_login() const noexcept { return get_login_info().get_login(); }
-    const text_type& get_password() const noexcept { return get_login_info().get_password(); }
-    void set_login(const text_type& l) { _login_info.set_login(l); }
-    void set_password(const text_type& p) { _login_info.set_password(p); }
-private:
-    LoginParams<AAdministrator> _login_info;
+//public:
+//    const login_info_type& get_login_info() const noexcept { return _login_info; }
+//    const key_type& get_key() const noexcept { return get_login_info().get_key(); }
+//    const text_type& get_login() const noexcept { return get_login_info().get_login(); }
+//    const text_type& get_password() const noexcept { return get_login_info().get_password(); }
+//    void set_login(const text_type& l) { _login_info.set_login(l); }
+//    void set_password(const text_type& p) { _login_info.set_password(p); }
+//private:
+//    LoginParams<AAdministrator> _login_info;
 };
 
 class AAdministrator : public AManager
