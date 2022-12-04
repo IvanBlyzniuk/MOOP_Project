@@ -1,7 +1,7 @@
 #ifndef NOTENOUGHMONEYEXCEPTION_H
 #define NOTENOUGHMONEYEXCEPTION_H
 
-#include <QException>>
+#include <QException>
 
 class NotEnoughMoneyException : public QException
 {

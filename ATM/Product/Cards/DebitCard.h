@@ -49,6 +49,8 @@ inline auto DebitCard::do_card_balance() const noexcept -> balance_type
 
 inline auto DebitCard::do_set_balance(const balance_type nval) -> void
 {
+    if(nval < 0)
+        throw NotEnoughMoneyException("Not enough money on balance to perform an operation.");
     _info.set_balance(nval);
 }
 

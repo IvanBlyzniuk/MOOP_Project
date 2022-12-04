@@ -15,7 +15,7 @@ PutWithdrawWidget::PutWithdrawWidget(std::shared_ptr<ISerializer> ser,QWidget *p
     ui->setupUi(this);
     ui->pinInputField->setEchoMode(QLineEdit::Password);
     ui->pinInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
-    ui->moneyInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\.[0-9]{1,2})?$ ")));
+    ui->moneyInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\\.[0-9]{1,2})?$ ")));
 }
 
 PutWithdrawWidget::~PutWithdrawWidget()

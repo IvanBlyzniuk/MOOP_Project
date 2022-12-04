@@ -1,9 +1,21 @@
 #include "db.h"
 #include "Exceptions/AlreadyExistsException.h"
 #include "Exceptions/DoesntExistException.h"
-DB::DB()
+#include "Product/Cards/icard.h"
+#include "Product/Cards/creditcard.h"
+#include "Product/Cards/DebitCard.h"
+#include "Product/Managers/amanager.h"
+#include "Product/Managers/aadministrator.h"
+#include "Product/Factories/CardFactory.h"
+#include "Product/Factories/ManagerFactory.h"
+#include "Product/Factories/AdministratorFactory.h"
+#include "Product/Managers/standardmanager.h"
+#include "Product/Managers/privilegedmanager.h"
+
+DB::DB() :
+    sdb(QSqlDatabase::addDatabase("QSQLITE"))
 {
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
+    //sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName("data.sqlite");
     sdb.open();
     QSqlQuery query;
@@ -18,7 +30,7 @@ DB::~DB()
     sdb.close();
 }
 
-void DB::serialize(const DebitCard& card) const
+void DB::do_serialize(const DebitCard& card) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM debit_cards WHERE number=(:number)");
@@ -44,7 +56,7 @@ void DB::serialize(const DebitCard& card) const
         query.exec();
     }
 }
-void DB::serialize(const CreditCard& card) const
+void DB::do_serialize(const CreditCard& card) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number)");
@@ -73,7 +85,7 @@ void DB::serialize(const CreditCard& card) const
         query.exec();
     }
 }
-void DB::serialize(const AManager& manager) const
+void DB::do_serialize(const AManager& manager) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM managers WHERE login=(:login)");
@@ -91,7 +103,7 @@ void DB::serialize(const AManager& manager) const
         throw AlreadyExistsException("Specified manager already exists");
     }
 }
-void DB::serialize(const AAdministrator& admin) const
+void DB::do_serialize(const AAdministrator& admin) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM privileged_managers WHERE login=(:login)");
@@ -109,8 +121,9 @@ void DB::serialize(const AAdministrator& admin) const
         throw AlreadyExistsException("Specified manager already exists");
     }
 }
-bool DB::existstCard(const QString& number) const
+bool DB::do_exists(const ProductKeyInfo<ICard>& key) const noexcept
 {
+    const QString& number = key.get_number();
     QSqlQuery query;
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number)");
     query.bindValue(":number",number);
@@ -124,8 +137,9 @@ bool DB::existstCard(const QString& number) const
         return true;
     return false;
 }
-bool DB::existstManager(const QString& login) const
+bool DB::do_exists(const ProductKeyInfo<AManager>& key) const noexcept
 {
+    const QString& login = key.get_login();
     QSqlQuery query;
     query.prepare("SELECT * FROM managers WHERE login=(:login)");
     query.bindValue(":login",login);
@@ -139,9 +153,10 @@ bool DB::existstManager(const QString& login) const
         return true;
     return false;
 }
-void DB::removeCard(const QString& number) const
+void DB::do_removeCard(const ProductKeyInfo<ICard>& key) const
 {
-    if (!existstCard(number))
+    const QString& number = key.get_number();
+    if (!exists_card(number))
         throw DoesntExistException("Specified card doesn't exist");
     QSqlQuery query;
     query.prepare("DELETE FROM debit_cards WHERE number=(:number)");
@@ -151,9 +166,10 @@ void DB::removeCard(const QString& number) const
     query.bindValue(":number",number);
     query.exec();
 }
-void DB::removeManager(const QString& login) const
+void DB::do_removeManager(const ProductKeyInfo<AManager>& key) const
 {
-    if(!existstManager(login))
+    const QString& login = key.get_login();
+    if(!exists_manager(login))
         throw DoesntExistException("Specified manager doesn't exist");
     QSqlQuery query;
     query.prepare("DELETE FROM managers WHERE login=(:login)");
@@ -163,8 +179,10 @@ void DB::removeManager(const QString& login) const
     query.bindValue(":login",login);
     query.exec();
 }
-std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& pin) const
+auto DB::do_deserialize(const LoginParams<ICard>& key) const -> out_product_ptr<ICard>
 {
+    const QString& number = key.get_number();
+    const QString& pin = key.get_pin();
     QSqlQuery query;
     query.prepare("SELECT * FROM debit_cards WHERE number=(:number) AND pin=(:pin)");
     query.bindValue(":number",number);
@@ -199,8 +217,10 @@ std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& 
     }
     throw DoesntExistException("Specified card doesn't exist");
 }
-std::unique_ptr<AManager> DB::deserializeManager(const QString& login,const QString& password) const
+std::unique_ptr<AManager> DB::do_deserialize(const LoginParams<AManager>& key) const
 {
+    const QString& login = key.get_login();
+    const QString& password = key.get_password();
     QSqlQuery query;
     query.prepare("SELECT * FROM managers WHERE login=(:login) AND password=(:password)");
     query.bindValue(":login",login);
@@ -228,9 +248,10 @@ std::unique_ptr<AManager> DB::deserializeManager(const QString& login,const QStr
     throw DoesntExistException("Specified manager doesn't exist");
 }
 
-void DB::changeBalance(const QString& number,float amount) const
+void DB::do_changeBalance(const ProductKeyInfo<ICard>& key, ICard::balance_type amount) const
 {
-    if(!existstCard(number))
+    const QString& number = key.get_number();
+    if(!exists_card(number))
         throw DoesntExistException("Specified card doesn't exist");
     if(amount < 0)
         throw InputException("Negative transaction sum");
