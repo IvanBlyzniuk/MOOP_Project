@@ -61,6 +61,16 @@ inline auto ISerializer::exists_manager(const ProductKeyInfo<AManager>& info) co
     return do_exists(info);
 }
 
+inline void ISerializer::remove_card(const ProductKeyInfo<ICard>& key) const
+{
+    return do_removeCard(key);
+}
+
+inline void ISerializer::remove_manager(const ProductKeyInfo<AManager>& key) const
+{
+    return do_removeManager(key);
+}
+
 inline auto ISerializer::deserialize(const LoginParams<ICard>& ps) const -> out_product_ptr<ICard>
 {
     return do_deserialize(ps);

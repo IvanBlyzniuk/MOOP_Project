@@ -129,7 +129,7 @@ void DefaultManagerWidget::on_addCardButton_clicked()
             credit_card->set_credit_limit(credit_limit);
             new_card = credit_card;
         }
-        registrator->make_registration(*new_card);
+        registrator->make_registration(std::shared_ptr<ICard>(new_card));
     }
     catch (const AlreadyExistsException&)
     {
