@@ -1,14 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <Enums/widgets.h>
+#include "DB/db.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
-      serializer(nullptr),
+      serializer(new DB),
       cardLoginW(new LoginWidget(nullptr,serializer)),
       managerLoginW(new ManagerLoginWidget(serializer)),
-      defaultManagerW(new DefaultManagerWidget),
-      privilegedManagerW(new PrivilegedManagerWidget),
+      defaultManagerW(new DefaultManagerWidget(serializer)),
+      privilegedManagerW(new PrivilegedManagerWidget(serializer)),
       mainOptionsW(new MainOptionsWidget),
       putWithdrawW(new PutWithdrawWidget(serializer)),
       changePinW(new ChangePinWidget(serializer)),
@@ -52,9 +53,13 @@ void MainWindow::connectSlots()
     connect(putWithdrawW,SIGNAL(changePage(int)),this,SLOT(changeCurrentWidget(int)));
     connect(changePinW,SIGNAL(changePage(int)),this,SLOT(changeCurrentWidget(int)));
     connect(transactionW,SIGNAL(changePage(int)),this,SLOT(changeCurrentWidget(int)));
+    connect(privilegedManagerW,SIGNAL(changePage(int)),this,SLOT(changeCurrentWidget(int)));
 
-    connect(cardLoginW,SIGNAL(setCurrentCard(std::shared_ptr<ICard>)),mainOptionsW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
-    connect(cardLoginW,SIGNAL(setCurrentCard(std::shared_ptr<ICard>)),putWithdrawW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
-    connect(cardLoginW,SIGNAL(setCurrentCard(std::shared_ptr<ICard>)),changePinW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
-    connect(cardLoginW,SIGNAL(setCurrentCard(std::shared_ptr<ICard>)),transactionW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
+    connect(cardLoginW,SIGNAL(sendCard(std::shared_ptr<ICard>)),mainOptionsW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
+    connect(cardLoginW,SIGNAL(sendCard(std::shared_ptr<ICard>)),putWithdrawW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
+    connect(cardLoginW,SIGNAL(sendCard(std::shared_ptr<ICard>)),changePinW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
+    connect(cardLoginW,SIGNAL(sendCard(std::shared_ptr<ICard>)),transactionW,SLOT(setCurrentCard(std::shared_ptr<ICard>)));
+
+    connect(managerLoginW,SIGNAL(sendManager(std::shared_ptr<AManager>)),defaultManagerW,SLOT(setCurrentManager(std::shared_ptr<AManager>)));
+    connect(managerLoginW,SIGNAL(sendManager(std::shared_ptr<AManager>)),privilegedManagerW,SLOT(setCurrentManager(std::shared_ptr<AManager>)));
 }

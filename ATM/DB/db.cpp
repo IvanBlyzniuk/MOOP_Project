@@ -32,6 +32,7 @@ DB::~DB()
 
 void DB::do_serialize(const DebitCard& card) const
 {
+    //qDebug() << "Serialize debitCard";
     QSqlQuery query;
     query.prepare("SELECT * FROM debit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());
@@ -58,6 +59,7 @@ void DB::do_serialize(const DebitCard& card) const
 }
 void DB::do_serialize(const CreditCard& card) const
 {
+    //qDebug() << "Serialize creditCard";
     QSqlQuery query;
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());
@@ -196,7 +198,7 @@ auto DB::do_deserialize(const LoginParams<ICard>& key) const -> out_product_ptr<
         QString last_name = query.value(rec.indexOf("lastname")).toString();
         CardFactory<DebitCard> factory;
         std::unique_ptr<ICard> uptr = factory.create_product(ProductCommonInfo<ICard>(number,pin,first_name,last_name,balance));
-        return std::unique_ptr<ICard>(dynamic_cast<ICard*>(uptr.release()));
+        return uptr;
     }
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number) AND pin=(:pin)");
     query.bindValue(":number",number);
@@ -211,9 +213,7 @@ auto DB::do_deserialize(const LoginParams<ICard>& key) const -> out_product_ptr<
         float credit_limit = query.value(rec.indexOf("credit_limit")).toFloat();
         CardFactory<CreditCard> factory;
         std::unique_ptr<ICard> uicardPtr = factory.create_product({number,pin,first_name,last_name,balance});
-        ICard * icardPtr = uicardPtr.release();
-        CreditCard * cardPtr = dynamic_cast<CreditCard*>(icardPtr);
-        std::unique_ptr<CreditCard> res(cardPtr);
+        std::unique_ptr<CreditCard> res(dynamic_cast<CreditCard*>(uicardPtr.release()));
         res->set_credit_limit(credit_limit);
         return res;
     }

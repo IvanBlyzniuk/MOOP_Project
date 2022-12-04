@@ -2,13 +2,16 @@
 #include "ui_managerloginwidget.h"
 
 #include <Login/managerloginagent.h>
+#include <Product/Managers/privilegedmanager.h>
+#include <Product/Managers/amanager.h>
+#include <Product/Managers/StandardManager.h>
 
 ManagerLoginWidget::ManagerLoginWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ManagerLoginWidget)
 {
     ui->setupUi(this);
-    ui->loginField->setEchoMode(QLineEdit::Password);
+    ui->passwordField->setEchoMode(QLineEdit::Password);
     loginAgent = std::make_shared<ManagerLoginAgent>(serializer);
 }
 
@@ -17,15 +20,23 @@ ManagerLoginWidget::~ManagerLoginWidget()
     delete ui;
 }
 
-void ManagerLoginWidget::login(std::shared_ptr<AManager>)
+void ManagerLoginWidget::login(AManager& manager)
 {
-    emit changePage(static_cast<int>(Widgets::DEFAULT_MANAGER));
+    try
+    {
+        dynamic_cast<PrivilegedManager&>(manager);
+        emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
+    }
+    catch (const std::bad_cast&)
+    {
+        emit changePage(static_cast<int>(Widgets::DEFAULT_MANAGER));
+    }
 }
 
-void ManagerLoginWidget::login(std::shared_ptr<AAdministrator>)
-{
-    emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
-}
+//void ManagerLoginWidget::login(const PriviligedManager&)
+//{
+
+//}
 
 void ManagerLoginWidget::makeManagerLogin()
 {
@@ -36,7 +47,7 @@ void ManagerLoginWidget::makeManagerLogin()
     //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<AManager> manager = loginAgent -> login({ui->loginField->text(),ui->passwordField->text()});
         emit sendManager(manager);
-        login(manager);
+        login(*manager.get());
     }
     catch(...)
     {
