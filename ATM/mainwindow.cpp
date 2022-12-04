@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
       serializer(nullptr),
       cardLoginW(new LoginWidget(nullptr,serializer)),
       managerLoginW(new ManagerLoginWidget(serializer)),
-      defaultManagerW(new DefaultManagerWidget),
+      defaultManagerW(new DefaultManagerWidget(serializer)),
       privilegedManagerW(new PrivilegedManagerWidget),
       mainOptionsW(new MainOptionsWidget),
       putWithdrawW(new PutWithdrawWidget(serializer)),

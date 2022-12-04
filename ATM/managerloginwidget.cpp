@@ -3,6 +3,8 @@
 
 #include <Login/managerloginagent.h>
 
+#include <Product/Managers/amanager.h>
+
 ManagerLoginWidget::ManagerLoginWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ManagerLoginWidget)
@@ -17,12 +19,12 @@ ManagerLoginWidget::~ManagerLoginWidget()
     delete ui;
 }
 
-void ManagerLoginWidget::login(std::shared_ptr<AManager>)
+void ManagerLoginWidget::login(const AManager&)
 {
     emit changePage(static_cast<int>(Widgets::DEFAULT_MANAGER));
 }
 
-void ManagerLoginWidget::login(std::shared_ptr<AAdministrator>)
+void ManagerLoginWidget::login(const AAdministrator&)
 {
     emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
 }
@@ -36,7 +38,7 @@ void ManagerLoginWidget::makeManagerLogin()
     //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<AManager> manager = loginAgent -> login({ui->loginField->text(),ui->passwordField->text()});
         emit sendManager(manager);
-        login(manager);
+        login(*manager.get());
     }
     catch(...)
     {

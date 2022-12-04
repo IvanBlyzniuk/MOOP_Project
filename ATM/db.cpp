@@ -178,7 +178,7 @@ std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& 
         QString last_name = query.value(rec.indexOf("lastname")).toString();
         CardFactory<DebitCard> factory;
         std::unique_ptr<ICard> uptr = factory.create_product(ProductCommonInfo<ICard>(number,pin,first_name,last_name,balance));
-        return std::unique_ptr<ICard>(dynamic_cast<ICard*>(uptr.release()));
+        return uptr;
     }
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number) AND pin=(:pin)");
     query.bindValue(":number",number);
@@ -193,9 +193,7 @@ std::unique_ptr<ICard> DB::deserializeCard(const QString& number,const QString& 
         float credit_limit = query.value(rec.indexOf("credit_limit")).toFloat();
         CardFactory<CreditCard> factory;
         std::unique_ptr<ICard> uicardPtr = factory.create_product({number,pin,first_name,last_name,balance});
-        ICard * icardPtr = uicardPtr.release();
-        CreditCard * cardPtr = dynamic_cast<CreditCard*>(icardPtr);
-        std::unique_ptr<CreditCard> res(cardPtr);
+        std::unique_ptr<CreditCard> res(dynamic_cast<CreditCard*>(uicardPtr.release()));
         res->set_credit_limit(credit_limit);
         return res;
     }
