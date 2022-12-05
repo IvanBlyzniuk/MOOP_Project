@@ -20,7 +20,7 @@ private:
     bool do_exists(const key_info_type&) const noexcept override;
     void do_remove(const key_info_type&) const override;
     out_product_ptr do_deserialize(const login_info_type&) const override;
-    void change_balance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const;
+    void do_change_balance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const override;
 private:
     void serialize_debit_card(const DebitCard&) const;
     void serialize_credit_card(const CreditCard&) const;

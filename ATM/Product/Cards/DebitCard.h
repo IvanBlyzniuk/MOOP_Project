@@ -17,6 +17,7 @@ private:
     const CommonInfoBase& do_common_info()     const noexcept override;
     const text_type& do_owner_firstname()      const noexcept override;
     const text_type& do_owner_lastname()       const noexcept override;
+    void do_set_pin(const text_type&)                         override;
 private:
     bool check_input() const noexcept;
 private:
@@ -82,6 +83,11 @@ inline auto DebitCard::do_owner_firstname() const noexcept -> const text_type&
 inline auto DebitCard::do_owner_lastname() const noexcept -> const text_type&
 {
     return _info.get_owner_lastname();
+}
+
+inline void DebitCard::do_set_pin(const text_type & new_pin)
+{
+    _info.set_pin(new_pin);
 }
 
 

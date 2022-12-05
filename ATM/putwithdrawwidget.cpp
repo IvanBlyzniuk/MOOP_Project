@@ -53,8 +53,9 @@ void PutWithdrawWidget::on_putMoneyButton_clicked()
 {
     if(check())
     {
-    TransactionManager tr(currentCard,serializer);
-    ui->infoField->setText(tr.putMoney(ui->moneyInputField->text().toFloat())->toMessage());
+        TransactionManager tr(currentCard,serializer);
+        ui->infoField->setText(tr.putMoney(ui->moneyInputField->text().toFloat())->toMessage());
+
     }
 }
 
@@ -65,7 +66,7 @@ void PutWithdrawWidget::on_withdrawMoneyButton_clicked()
     {
         try {
             TransactionManager tr(currentCard,serializer);
-            ui->infoField->setText(tr.getMoney(ui->moneyInputField->text().toFloat()*(-1))->toMessage());
+            ui->infoField->setText(tr.getMoney(ui->moneyInputField->text().toFloat())->toMessage());
         } catch (...)
         {
             ui->infoField->setText("Your current limit does not allow you to withdraw such amount of money.");

@@ -21,6 +21,7 @@ private:
     const CommonInfoBase& do_common_info()     const noexcept override;
     const text_type& do_owner_firstname()      const noexcept override;
     const text_type& do_owner_lastname()       const noexcept override;
+    void do_set_pin(const text_type&)                         override;
 private:
     bool check_input() const noexcept;
 private:
@@ -73,9 +74,7 @@ inline auto CreditCard::do_card_balance() const noexcept -> balance_type
 
 inline auto CreditCard::do_set_balance(const balance_type nval) -> void
 {
-    if(nval < 0.0)
-        throw NotEnoughMoneyException("Not enough money on balance to perform an operation.");
-    if(nval > credit_limit())
+    if(nval < -credit_limit())
         throw InputException("Balance cannot exceed credit limit.");
     _info.set_balance(nval);
 }
@@ -108,6 +107,11 @@ inline auto CreditCard::do_owner_firstname() const noexcept -> const text_type&
 inline auto CreditCard::do_owner_lastname() const noexcept -> const text_type&
 {
     return _info.get_owner_lastname();
+}
+
+inline void CreditCard::do_set_pin(const text_type & new_pin)
+{
+    _info.set_pin(new_pin);
 }
 
 #endif // CREDITCARD_H

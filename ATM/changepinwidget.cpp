@@ -1,6 +1,7 @@
 #include "changepinwidget.h"
 #include "Product/Cards/icard.h"
 #include "ui_changepinwidget.h"
+#include "DB/iserializer.h"
 
 ChangePinWidget::ChangePinWidget(std::shared_ptr<ISerializer> ser,QWidget *parent) :
     QWidget(parent),
@@ -8,6 +9,8 @@ ChangePinWidget::ChangePinWidget(std::shared_ptr<ISerializer> ser,QWidget *paren
     serializer(ser)
 {
     ui->setupUi(this);
+    ui->oldPinField->setEchoMode(QLineEdit::Password);
+    ui->newPinField->setEchoMode(QLineEdit::Password);
 }
 
 ChangePinWidget::~ChangePinWidget()
@@ -27,7 +30,7 @@ bool ChangePinWidget::check()
         ui->infoField->setText("Please, enter correct old PIN.");
         return false;
     }
-    if(ui->oldPinField->text().length() < 3 || ui->oldPinField->text().length() > 3)
+    if(ui->oldPinField->text().length() != 4 || ui->newPinField->text().length() != 4)
     {
         ui->infoField->setText("Incorrect PIN length!");
         return false;
@@ -55,7 +58,8 @@ void ChangePinWidget::on_changePinButton_clicked()
 {
     if(check())
     {
-        //currentCard -> changePIN
+        currentCard->set_pin(ui->newPinField->text());
+        serializer->serialize(currentCard);
         ui->infoField->setText("PIN changed succsessfully.");
     }
 }

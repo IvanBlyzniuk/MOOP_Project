@@ -3,6 +3,7 @@
 #include <memory>
 #include "Product/IProduct.h"
 #include "Product/ProductInfo.h"
+#include "Product/Cards/icard.h"
 
 class ISerializer
 {
@@ -17,11 +18,13 @@ public:
     bool exists(const key_info_type&) const noexcept;
     void remove(const key_info_type&) const;
     out_product_ptr deserialize(const login_info_type&) const;
+    void change_balance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const;
 private:
     virtual void do_serialize(in_product_ptr) const = 0;
     virtual bool do_exists(const key_info_type&) const noexcept = 0;
     virtual void do_remove(const key_info_type&) const = 0;
     virtual out_product_ptr do_deserialize(const login_info_type&) const = 0;
+    virtual void do_change_balance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const = 0;
 };
 
 inline void ISerializer::serialize(in_product_ptr ptr) const
@@ -42,6 +45,11 @@ inline void ISerializer::remove(const key_info_type& key) const
 inline auto ISerializer::deserialize(const login_info_type& info) const -> out_product_ptr
 {
     return do_deserialize(info);
+}
+
+inline void ISerializer::change_balance(const ProductKeyInfo<ICard>& card, const ICard::balance_type amount) const
+{
+    do_change_balance(card, amount);
 }
 
 

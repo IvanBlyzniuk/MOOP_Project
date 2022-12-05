@@ -34,9 +34,10 @@ public:
     const ProductKeyInfo<ICard>& get_key () const noexcept {return _key; }
     const text_type& get_number() const noexcept { return get_key().get_number(); }
     const text_type& get_pin() const noexcept { return _pin; }
+    void set_pin(const text_type& new_pin) noexcept { _pin = new_pin; }
 private:
     ProductKeyInfo<ICard> _key;
-    const text_type _pin;
+    text_type _pin;
 };
 
 template<>
@@ -48,10 +49,10 @@ public:
 public:
     ProductCommonInfo
     (
-        const text_type number,
-        const text_type pin,
-        const text_type owner_firstname,
-        const text_type owner_lastname,
+        const text_type& number,
+        const text_type& pin,
+        const text_type& owner_firstname,
+        const text_type& owner_lastname,
         const balance_type balance
     ) noexcept :
         _login_info({number, pin}),
@@ -67,7 +68,8 @@ public:
     const text_type&    get_owner_firstname() const noexcept { return _owner_firstname; }
     const text_type&    get_owner_lastname() const noexcept { return _owner_lastname; }
     balance_type  get_balance() const noexcept { return _balance; }
-    void set_balance(const balance_type bal) {_balance = bal;}
+    void set_balance(const balance_type bal) { _balance = bal; }
+    void set_pin(const text_type& new_pin) noexcept { _login_info.set_pin(new_pin); }
 private:
     LoginParams<ICard> _login_info;
     text_type _owner_firstname;
@@ -101,6 +103,7 @@ public:
     const text_type& owner_firstname()      const noexcept;
     const text_type& owner_lastname()       const noexcept;
     void             set_balance(const balance_type);
+    void             set_pin(const text_type&);
 private:
     virtual const text_type& do_card_number()        const noexcept  = 0;
     virtual const text_type& do_card_pincode()       const noexcept  = 0;
@@ -108,6 +111,7 @@ private:
     virtual void             do_set_balance(const balance_type)      = 0;
     virtual const text_type& do_owner_firstname()     const noexcept = 0;
     virtual const text_type& do_owner_lastname()      const noexcept = 0;
+    virtual void             do_set_pin(const text_type&)            = 0;
 };
 
 inline auto ICard::card_number() const noexcept -> const text_type&
@@ -139,5 +143,12 @@ inline auto ICard::set_balance(const balance_type new_val) -> void
 {
     return do_set_balance(new_val);
 }
+
+inline void ICard::set_pin(const text_type & new_pin)
+{
+    do_set_pin(new_pin);
+}
+
+
 
 #endif // ICARD_H

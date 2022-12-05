@@ -48,7 +48,13 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="cardNumField"/>
+      <widget class="QLineEdit" name="cardNumField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="2" column="1">
       <spacer name="verticalSpacer_5">
@@ -76,7 +82,13 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="moneyInputField"/>
+      <widget class="QLineEdit" name="moneyInputField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="4" column="1">
       <spacer name="verticalSpacer">
@@ -104,7 +116,13 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="pinInputField"/>
+      <widget class="QLineEdit" name="pinInputField">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="6" column="1">
       <spacer name="verticalSpacer_4">

@@ -15,7 +15,7 @@
 DB::DB() :
     sdb(QSqlDatabase::addDatabase("QSQLITE"))
 {
-    //sdb = QSqlDatabase::addDatabase("QSQLITE");
+    bool exists = QFile::exists("data.sqlite");
     sdb.setDatabaseName("data.sqlite");
     sdb.open();
     QSqlQuery query;
@@ -23,6 +23,17 @@ DB::DB() :
     query.exec("create table if not exists 'credit_cards' ('number' text PRIMARY KEY,'pin' text, 'balance' float, 'firstname' text, 'lastname' text, 'credit_limit' float)");
     query.exec("create table if not exists 'managers' ('login' text PRIMARY KEY, 'password' text)");
     query.exec("create table if not exists 'privileged_managers' ('login' text PRIMARY KEY, 'password' text)");
+    if(!exists)
+    {
+        query.prepare("INSERT INTO debit_cards VALUES ('1234567890123456','1234',100,'Vasiliy','Pupkin')");
+        query.exec();
+        query.prepare("INSERT INTO credit_cards VALUES ('1234567890123457','5678',200,'Petrik','Pyatochkin',100)");
+        query.exec();
+        query.prepare("INSERT INTO privileged_managers VALUES ('admin','admin')");
+        query.exec();
+        query.prepare("INSERT INTO managers VALUES ('login','password')");
+        query.exec();
+    }
 }
 
 DB::~DB()
@@ -126,6 +137,7 @@ void DB::serialize_debit_card(const DebitCard& card) const
     QSqlQuery query;
     query.prepare("SELECT * FROM debit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());
+    query.exec();
     if(!query.first())
     {
         query.prepare("INSERT INTO debit_cards VALUES (:number,:pin,:balance,:firstname,:lastname)");
@@ -138,7 +150,7 @@ void DB::serialize_debit_card(const DebitCard& card) const
     }
     else
     {
-        query.prepare("UPDATE debit_cards SET number=:number,pin=:pin,balance=:balance,firstname=:firstname,lastname=:lastname) WHERE number=(:number)");
+        query.prepare("UPDATE debit_cards SET pin=:pin,balance=:balance,firstname=:firstname,lastname=:lastname WHERE number=(:number)");
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
@@ -149,7 +161,7 @@ void DB::serialize_debit_card(const DebitCard& card) const
 }
 void DB::serialize_credit_card(const CreditCard& card) const
 {
-    //qDebug() << "Serialize creditCard";
+    qDebug() << "Serialize creditCard";
     QSqlQuery query;
     query.prepare("SELECT * FROM credit_cards WHERE number=(:number)");
     query.bindValue(":number",card.card_number());
@@ -167,7 +179,7 @@ void DB::serialize_credit_card(const CreditCard& card) const
     }
     else
     {
-        query.prepare("UPDATE credit_cards SET number=:number,pin=:pin,balance=:balance,firstname=:firstname,lastname=:lastname,credit_limit=:credit_limit) WHERE number=(:number)");
+        query.prepare("UPDATE credit_cards SET pin=:pin,balance=:balance,firstname=:firstname,lastname=:lastname,credit_limit=:credit_limit WHERE number=(:number)");
         query.bindValue(":number",card.card_number());
         query.bindValue(":pin",card.card_pincode());
         query.bindValue(":balance",card.card_balance());
@@ -340,7 +352,7 @@ auto DB::deserialize_manager(const LoginParams<AManager>& key) const -> out_prod
     throw DoesntExistException("Specified manager doesn't exist");
 }
 
-void DB::change_balance(const ProductKeyInfo<ICard>& key, const ICard::balance_type amount) const
+void DB::do_change_balance(const ProductKeyInfo<ICard>& key, const ICard::balance_type amount) const
 {
     const QString& number = key.get_number();
     if(!exists_card(number))
