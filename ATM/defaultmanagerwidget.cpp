@@ -90,6 +90,7 @@ void DefaultManagerWidget::on_deleteCardButton_clicked()
     try
     {
         registrator->remove_registration({ui->cardNumInputField->text()});
+        ui->infoField->setText("Card deleted successfully.");
     }
     catch(const DoesntExistException&)
     {
@@ -130,6 +131,7 @@ void DefaultManagerWidget::on_addCardButton_clicked()
             new_card = credit_card;
         }
         registrator->make_registration(std::shared_ptr<ICard>(new_card));
+        ui->infoField->setText("Card added successfully.");
     }
     catch (const AlreadyExistsException&)
     {

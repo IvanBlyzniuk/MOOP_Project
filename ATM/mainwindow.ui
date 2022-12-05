@@ -27,7 +27,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">color:green</string>
       </property>
      </widget>
     </item>
