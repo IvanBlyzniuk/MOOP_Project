@@ -18,7 +18,7 @@ public:
 public:
     const text_type& get_number() const noexcept { return _number; }
 private:
-    const QString _number;
+    const text_type _number;
 };
 
 template<>

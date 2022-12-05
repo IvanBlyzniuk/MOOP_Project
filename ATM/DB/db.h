@@ -3,12 +3,12 @@
 #include "DB/iserializer.h"
 #include <QtSql>
 #include <memory>
+#include "Product/Cards/icard.h"
 
 class DebitCard;
 class CreditCard;
 class AManager;
 class AAdministrator;
-class ICard;
 
 class DB : public ISerializer
 {
@@ -16,17 +16,22 @@ public:
     DB();
     ~DB();
 private:
-    void do_changeBalance(const ProductKeyInfo<ICard>&, ICard::balance_type) const override;
-    void do_serialize(const DebitCard&)                                      const override;
-    void do_serialize(const CreditCard&)                                     const override;
-    void do_serialize(const AManager&)                                       const override;
-    void do_serialize(const AAdministrator&)                                 const override;
-    bool do_exists(const ProductKeyInfo<ICard>&)                    const noexcept override;
-    bool do_exists(const ProductKeyInfo<AManager>&)                 const noexcept override;
-    void do_removeCard(const ProductKeyInfo<ICard>&)                         const override;
-    void do_removeManager(const ProductKeyInfo<AManager>&)                   const override;
-    out_product_ptr<ICard> do_deserialize(const LoginParams<ICard>&)         const override;
-    out_product_ptr<AManager> do_deserialize(const LoginParams<AManager>&)   const override;
+    void do_serialize(in_product_ptr) const override;
+    bool do_exists(const key_info_type&) const noexcept override;
+    void do_remove(const key_info_type&) const override;
+    out_product_ptr do_deserialize(const login_info_type&) const override;
+    void change_balance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const;
+private:
+    void serialize_debit_card(const DebitCard&) const;
+    void serialize_credit_card(const CreditCard&) const;
+    void serialize_amanager(const AManager&) const;
+    void serialize_aadministrator(const AAdministrator&) const;
+    bool exists_card(const ProductKeyInfo<ICard>&) const noexcept;
+    bool exists_manager(const ProductKeyInfo<AManager>&) const noexcept;
+    void remove_card(const ProductKeyInfo<ICard>&) const;
+    void remove_manager(const ProductKeyInfo<AManager>&) const;
+    out_product_ptr deserialize_card(const LoginParams<ICard>&) const;
+    out_product_ptr deserialize_manager(const LoginParams<AManager>&) const;
 private:
     QSqlDatabase sdb;
 };

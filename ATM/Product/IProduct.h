@@ -44,5 +44,5 @@ inline const LoginParams<IProduct>& IProduct::login_info() const noexcept
     return do_login_info();
 }
 
-#include "ProductInfo.h"
+//#include "ProductInfo.h"
 #endif // IPRODUCT_H

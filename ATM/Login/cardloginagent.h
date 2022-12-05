@@ -3,7 +3,8 @@
 
 #include <DB/iserializer.h>
 #include "Login/ILoginAgent.h"
-
+#include "Product/Cards/icard.h"
+#include "Utils/casting.h"
 
 
 
@@ -26,7 +27,7 @@ inline std::shared_ptr<ICard> CardLoginAgent::do_login(const LoginParams<ICard> 
 
     try
     {
-        std::shared_ptr<ICard> card = serializer -> deserialize(params);
+        std::shared_ptr<ICard> card = cast_to<ICard>(serializer -> deserialize(params));
         return card;
     }
     catch (...)

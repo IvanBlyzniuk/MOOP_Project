@@ -12,13 +12,25 @@ template<typename AbstractProduct>
 class LoginParams;
 
 template<>
-class ProductCommonInfo<IProduct>{};
+class ProductCommonInfo<IProduct>
+{
+public:
+    virtual ~ProductCommonInfo() = default;
+};
 
 template<>
-class ProductKeyInfo<IProduct>{};
+class ProductKeyInfo<IProduct>
+{
+public:
+    virtual ~ProductKeyInfo() = default;
+};
 
 template<>
-class LoginParams<IProduct>{};
+class LoginParams<IProduct>
+{
+public:
+    virtual ~LoginParams() = default;
+};
 
 using CommonInfoBase = ProductCommonInfo<IProduct>;
 using KeyInfoBase = ProductKeyInfo<IProduct>;

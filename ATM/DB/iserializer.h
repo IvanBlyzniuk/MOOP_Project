@@ -1,94 +1,48 @@
 #ifndef ISERIALIZER_H
 #define ISERIALIZER_H
-#include "Product/Cards/DebitCard.h"
-#include "Product/Cards/creditcard.h"
-#include "Product/Managers/amanager.h"
 #include <memory>
-
-class AAdministrator;
+#include "Product/IProduct.h"
+#include "Product/ProductInfo.h"
 
 class ISerializer
 {
 public:
-    template<typename ProductType>
-    using in_product_ptr = std::shared_ptr<ProductType>;
-    template<typename ProductType>
-    using out_product_ptr = std::unique_ptr<ProductType>;
-    template<typename ProductType>
-    using product_info = ProductCommonInfo<ProductType>;
+    using in_product_ptr = std::shared_ptr<IProduct>;
+    using out_product_ptr = std::unique_ptr<IProduct>;
+    using common_info_type = CommonInfoBase;
+    using login_info_type = LoginInfoBase;
+    using key_info_type = KeyInfoBase;
 public:
-    void serialize(in_product_ptr<ICard>)    const;
-    void serialize(in_product_ptr<AManager>)     const;
-    bool exists_card(const ProductKeyInfo<ICard>&)    const noexcept;
-    bool exists_manager(const ProductKeyInfo<AManager>&) const noexcept;
-    void remove_card(const ProductKeyInfo<ICard>&) const;
-    void remove_manager(const ProductKeyInfo<AManager>&) const;
-    out_product_ptr<ICard> deserialize(const LoginParams<ICard>&)       const;
-    out_product_ptr<AManager> deserialize(const LoginParams<AManager>&) const;
-    void changeBalance(const ProductKeyInfo<ICard>&, const ICard::balance_type) const;
+    void serialize(in_product_ptr) const;
+    bool exists(const key_info_type&) const noexcept;
+    void remove(const key_info_type&) const;
+    out_product_ptr deserialize(const login_info_type&) const;
 private:
-    void do_serialize(const ICard&) const;
-    virtual void do_serialize(const DebitCard&)                                      const = 0;
-    virtual void do_serialize(const CreditCard&)                                     const = 0;
-    virtual void do_serialize(const AManager&)                                       const = 0;
-    virtual void do_serialize(const AAdministrator&)                                 const = 0;
-    virtual bool do_exists(const ProductKeyInfo<ICard>&)                             const noexcept = 0;
-    virtual bool do_exists(const ProductKeyInfo<AManager>&)                          const noexcept = 0;
-    virtual void do_removeCard(const ProductKeyInfo<ICard>&)                         const = 0;
-    virtual void do_removeManager(const ProductKeyInfo<AManager>&)                   const = 0;
-    virtual out_product_ptr<ICard> do_deserialize(const LoginParams<ICard>&)         const = 0;
-    virtual out_product_ptr<AManager> do_deserialize(const LoginParams<AManager>&)   const = 0;
-    virtual void do_changeBalance(const ProductKeyInfo<ICard>&, ICard::balance_type) const = 0;
+    virtual void do_serialize(in_product_ptr) const = 0;
+    virtual bool do_exists(const key_info_type&) const noexcept = 0;
+    virtual void do_remove(const key_info_type&) const = 0;
+    virtual out_product_ptr do_deserialize(const login_info_type&) const = 0;
 };
 
-inline auto ISerializer::serialize(in_product_ptr<ICard> ptr) const -> void
+inline void ISerializer::serialize(in_product_ptr ptr) const
 {
-    do_serialize(*ptr);
+    do_serialize(ptr);
 }
 
-inline auto ISerializer::serialize(in_product_ptr<AManager> ptr) const -> void
+inline bool ISerializer::exists(const key_info_type& key) const noexcept
 {
-    do_serialize(*ptr);
+    return do_exists(key);
 }
 
-inline auto ISerializer::exists_card(const ProductKeyInfo<ICard>& info) const noexcept -> bool
+inline void ISerializer::remove(const key_info_type& key) const
 {
-    return do_exists(info);
+    do_remove(key);
 }
 
-inline auto ISerializer::exists_manager(const ProductKeyInfo<AManager>& info) const noexcept -> bool
+inline auto ISerializer::deserialize(const login_info_type& info) const -> out_product_ptr
 {
-    return do_exists(info);
+    return do_deserialize(info);
 }
 
-inline void ISerializer::remove_card(const ProductKeyInfo<ICard>& key) const
-{
-    return do_removeCard(key);
-}
-
-inline void ISerializer::remove_manager(const ProductKeyInfo<AManager>& key) const
-{
-    return do_removeManager(key);
-}
-
-inline auto ISerializer::deserialize(const LoginParams<ICard>& ps) const -> out_product_ptr<ICard>
-{
-    return do_deserialize(ps);
-}
-
-inline auto ISerializer::deserialize(const LoginParams<AManager>& ps) const -> out_product_ptr<AManager>
-{
-    return do_deserialize(ps);
-}
-
-inline void ISerializer::changeBalance(const ProductKeyInfo<ICard>& key, ICard::balance_type bal) const
-{
-    do_changeBalance(key, bal);
-}
-
-inline void ISerializer::do_serialize(const ICard &) const
-{
-    throw InputException("Unknown Card");
-}
 
 #endif // ISERIALIZER_H

@@ -4,6 +4,9 @@
 #include "Product/Cards/icard.h"
 #include "aregistrator.h"
 #include "RegistratorTypedefs.h"
+#include "Product/Cards/DebitCard.h"
+#include "Product/Cards/creditcard.h"
+
 
 #define CardRegTemplate \
 template<std::derived_from<ICardRegistrator::product_abstract_type> CardType>
@@ -45,12 +48,12 @@ CardRegMethod do_make_registration(product_ptr info) const -> void
 
 CardRegMethod do_remove_registration(const product_key_type& info) const -> void
 {
-    _db->remove_card(info);
+    _db->remove(info);
 }
 
 CardRegMethod do_can_be_registered(const product_key_type& info) const noexcept -> bool
 {
-    return !_db->exists_card(info);
+    return !_db->exists(info);
 }
 
 using DebitCardRegistrator = CardRegistrator<DebitCard>;

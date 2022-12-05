@@ -57,6 +57,7 @@ HEADERS += \
     Registrations/managerregistrator.h \
     Transactions/transaction.h \
     Transactions/transactionmanager.h \
+    Utils/casting.h \
     changepinwidget.h \
     defaultmanagerwidget.h \
     loginwidget.h \

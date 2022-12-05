@@ -1,7 +1,9 @@
 #ifndef MANAGERLOGINAGENT_H
 #define MANAGERLOGINAGENT_H
 #include <DB/iserializer.h>
+#include "Product/Managers/amanager.h"
 #include "Login/ILoginAgent.h"
+#include "Utils/casting.h"
 
 
 
@@ -22,7 +24,7 @@ ManagerLoginAgent::ManagerLoginAgent(const std::shared_ptr<ISerializer> s) : ser
 
 inline std::shared_ptr<AManager> ManagerLoginAgent::do_login(const LoginParams<AManager> & params) const
 {
-    std::shared_ptr<AManager> manager = serializer -> deserialize(params);
+    std::shared_ptr<AManager> manager = cast_to<AManager>(serializer -> deserialize(params));
     return manager;
 }
 

@@ -30,7 +30,97 @@ DB::~DB()
     sdb.close();
 }
 
-void DB::do_serialize(const DebitCard& card) const
+void DB::do_serialize(in_product_ptr ptr) const
+{
+    const IProduct& ref = *ptr;
+    try
+    {
+        const AAdministrator& admin = dynamic_cast<const AAdministrator&>(ref);
+        serialize_aadministrator(admin);
+        return;
+    }
+    catch(const std::bad_cast&)
+    {
+        try
+        {
+            const AManager& manager = dynamic_cast<const AManager&>(ref);
+            serialize_amanager(manager);
+            return;
+        }
+        catch (const std::bad_cast&)
+        {
+            try
+            {
+                const DebitCard& card = dynamic_cast<const DebitCard&>(ref);
+                serialize_debit_card(card);
+                return;
+            }
+            catch(const std::bad_cast&)
+            {
+                try
+                {
+                    const CreditCard& card = dynamic_cast<const CreditCard&>(ref);
+                    serialize_credit_card(card);
+                    return;
+                }
+                catch (const std::bad_cast&)
+                {
+                    throw InputException("Trying to serialize unknown product.");
+                }
+            }
+        }
+    }
+}
+
+bool DB::do_exists(const key_info_type& key) const noexcept
+{
+    using card_key_t = ICard::key_type;
+    using manager_key_t = AManager::key_type;
+    try
+    {
+        const card_key_t& card_key = dynamic_cast<const card_key_t&>(key);
+        return exists_card(card_key);
+    }
+    catch (const std::bad_cast&)
+    {
+        const manager_key_t& manager_key = dynamic_cast<const manager_key_t&>(key);
+        return exists_manager(manager_key);
+    }
+}
+
+void DB::do_remove(const key_info_type& key) const
+{
+    using card_key_t = ICard::key_type;
+    using manager_key_t = AManager::key_type;
+    try
+    {
+        const card_key_t& card_key = dynamic_cast<const card_key_t&>(key);
+        remove_card(card_key);
+    }
+    catch (const std::bad_cast&)
+    {
+        const manager_key_t& manager_key = dynamic_cast<const manager_key_t&>(key);
+        remove_manager(manager_key);
+    }
+}
+
+auto DB::do_deserialize(const login_info_type& info) const -> out_product_ptr
+{
+    using card_log_t = ICard::login_info_type;
+    using manager_log_t = AManager::login_info_type;
+    try
+    {
+        const card_log_t& card_key = dynamic_cast<const card_log_t&>(info);
+        return deserialize_card(card_key);
+    }
+    catch (const std::bad_cast&)
+    {
+        const manager_log_t& manager_key = dynamic_cast<const manager_log_t&>(info);
+        return deserialize_manager(manager_key);
+    }
+}
+
+void DB::serialize_debit_card(const DebitCard& card) const
 {
     //qDebug() << "Serialize debitCard";
     QSqlQuery query;
@@ -57,7 +147,7 @@ void DB::do_serialize(const DebitCard& card) const
         query.exec();
     }
 }
-void DB::do_serialize(const CreditCard& card) const
+void DB::serialize_credit_card(const CreditCard& card) const
 {
     //qDebug() << "Serialize creditCard";
     QSqlQuery query;
@@ -87,7 +177,7 @@ void DB::do_serialize(const CreditCard& card) const
         query.exec();
     }
 }
-void DB::do_serialize(const AManager& manager) const
+void DB::serialize_amanager(const AManager& manager) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM managers WHERE login=(:login)");
@@ -105,7 +195,7 @@ void DB::do_serialize(const AManager& manager) const
         throw AlreadyExistsException("Specified manager already exists");
     }
 }
-void DB::do_serialize(const AAdministrator& admin) const
+void DB::serialize_aadministrator(const AAdministrator& admin) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM privileged_managers WHERE login=(:login)");
@@ -123,7 +213,7 @@ void DB::do_serialize(const AAdministrator& admin) const
         throw AlreadyExistsException("Specified manager already exists");
     }
 }
-bool DB::do_exists(const ProductKeyInfo<ICard>& key) const noexcept
+bool DB::exists_card(const ProductKeyInfo<ICard>& key) const noexcept
 {
     const QString& number = key.get_number();
     QSqlQuery query;
@@ -139,7 +229,7 @@ bool DB::do_exists(const ProductKeyInfo<ICard>& key) const noexcept
         return true;
     return false;
 }
-bool DB::do_exists(const ProductKeyInfo<AManager>& key) const noexcept
+bool DB::exists_manager(const ProductKeyInfo<AManager>& key) const noexcept
 {
     const QString& login = key.get_login();
     QSqlQuery query;
@@ -155,7 +245,7 @@ bool DB::do_exists(const ProductKeyInfo<AManager>& key) const noexcept
         return true;
     return false;
 }
-void DB::do_removeCard(const ProductKeyInfo<ICard>& key) const
+void DB::remove_card(const ProductKeyInfo<ICard>& key) const
 {
     const QString& number = key.get_number();
     if (!exists_card(number))
@@ -168,7 +258,7 @@ void DB::do_removeCard(const ProductKeyInfo<ICard>& key) const
     query.bindValue(":number",number);
     query.exec();
 }
-void DB::do_removeManager(const ProductKeyInfo<AManager>& key) const
+void DB::remove_manager(const ProductKeyInfo<AManager>& key) const
 {
     const QString& login = key.get_login();
     if(!exists_manager(login))
@@ -181,7 +271,7 @@ void DB::do_removeManager(const ProductKeyInfo<AManager>& key) const
     query.bindValue(":login",login);
     query.exec();
 }
-auto DB::do_deserialize(const LoginParams<ICard>& key) const -> out_product_ptr<ICard>
+auto DB::deserialize_card(const LoginParams<ICard>& key) const -> out_product_ptr
 {
     const QString& number = key.get_number();
     const QString& pin = key.get_pin();
@@ -219,7 +309,7 @@ auto DB::do_deserialize(const LoginParams<ICard>& key) const -> out_product_ptr<
     }
     throw DoesntExistException("Specified card doesn't exist");
 }
-std::unique_ptr<AManager> DB::do_deserialize(const LoginParams<AManager>& key) const
+auto DB::deserialize_manager(const LoginParams<AManager>& key) const -> out_product_ptr
 {
     const QString& login = key.get_login();
     const QString& password = key.get_password();
@@ -250,7 +340,7 @@ std::unique_ptr<AManager> DB::do_deserialize(const LoginParams<AManager>& key) c
     throw DoesntExistException("Specified manager doesn't exist");
 }
 
-void DB::do_changeBalance(const ProductKeyInfo<ICard>& key, ICard::balance_type amount) const
+void DB::change_balance(const ProductKeyInfo<ICard>& key, const ICard::balance_type amount) const
 {
     const QString& number = key.get_number();
     if(!exists_card(number))
