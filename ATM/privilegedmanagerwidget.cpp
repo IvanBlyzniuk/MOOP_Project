@@ -7,11 +7,12 @@
 #include "Exceptions/AlreadyExistsException.h"
 #include "Exceptions/DoesntExistException.h"
 #include "Enums/widgets.h"
-#include "Utils/casting.h"
+#include "Registrations/managerregistrator.h"
 
 PrivilegedManagerWidget::PrivilegedManagerWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PrivilegedManagerWidget)
+    ui(new Ui::PrivilegedManagerWidget),
+    registrator(std::make_shared<ManagerRegistrator<AManager>>(serializer))
 {
     ui->setupUi(this);
     ui->passwordField->setEchoMode(QLineEdit::Password);
@@ -65,12 +66,13 @@ void PrivilegedManagerWidget::on_deleteManagerButton_clicked()
 
 void PrivilegedManagerWidget::on_addManagerButton_clicked()
 {
+    qDebug() << "added\n";
     if(!checkAdd())
         return;
     try
     {
         std::shared_ptr<AManager> newManager;
-        if(ui->makePrivilegedButton->isChecked())
+        if(!ui->makePrivilegedButton->isChecked())
         {
             ManagerFactory<StandardManager> factory;
             QString login = ui->loginField->text();
@@ -82,8 +84,8 @@ void PrivilegedManagerWidget::on_addManagerButton_clicked()
             AdministratorFactory<PrivilegedManager> factory;
             QString login = ui->loginField->text();
             QString password = ui->passwordField->text();
-            std::unique_ptr<AAdministrator> uptr = factory.create_product(ProductCommonInfo<AAdministrator>(login,password));
-            //newManager = cast_to<AManager>(uptr); // std::make_shared<AManager>(dynamic_cast<AManager*>(uptr.release()));
+            //std::unique_ptr<AAdministrator> uptr = factory.create_product(ProductCommonInfo<AAdministrator>(login,password));
+            newManager = factory.create_product(ProductCommonInfo<AAdministrator>(login,password)); // std::make_shared<AManager>(dynamic_cast<AManager*>(uptr.release()));
         }
         registrator->make_registration(newManager);
     }

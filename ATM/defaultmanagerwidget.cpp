@@ -9,14 +9,14 @@
 
 DefaultManagerWidget::DefaultManagerWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::DefaultManagerWidget)
+    ui(new Ui::DefaultManagerWidget),
+    registrator(std::make_shared<CardRegistrator<ICard>>(serializer))
 {
     ui->setupUi(this);
     ui->pinInputField->setEchoMode(QLineEdit::Password);
     ui->pinInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->cardNumInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->creditLimitInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\\.[0-9]{1,2})?$ ")));
-    registrator = std::make_shared<CardRegistrator<ICard>>(serializer);
 }
 
 DefaultManagerWidget::~DefaultManagerWidget()

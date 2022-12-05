@@ -48,12 +48,12 @@ ManagerRegMethod do_make_registration(product_ptr info) const -> void
 
 ManagerRegMethod do_remove_registration(const product_key_type& info) const -> void
 {
-    _db->remove_manager(info);
+    _db->remove(info);
 }
 
 ManagerRegMethod do_can_be_registered(const product_key_type& info) const noexcept -> bool
 {
-    return !_db->exists_manager(info);
+    return !_db->exists(info);
 }
 
 using StandardManagerRegistrator = ManagerRegistrator<StandardManager>;
