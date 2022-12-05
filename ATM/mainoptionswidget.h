@@ -20,6 +20,7 @@ public:
 private:
     Ui::MainOptionsWidget *ui;
     std::shared_ptr<ICard> currentCard;
+    void cleanOutput();
 
 signals:
     void changePage(int);

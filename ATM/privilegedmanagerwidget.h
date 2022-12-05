@@ -24,6 +24,8 @@ private:
     std::shared_ptr<ARegistrator<AManager>> registrator;
     bool checkDelete();
     bool checkAdd();
+    void cleanInput();
+    void cleanOutput();
 signals:
     void changePage(int);
 

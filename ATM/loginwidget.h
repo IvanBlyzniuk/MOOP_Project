@@ -34,6 +34,8 @@ private:
     std::shared_ptr<ILoginAgent<ICard>> loginAgent;
     std::shared_ptr<ISerializer> serializer;
     void login();
+    void cleanInput();
+    void cleanOutput();
 
 signals:
     void changePage(int);

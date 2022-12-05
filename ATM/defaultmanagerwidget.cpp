@@ -17,6 +17,7 @@ DefaultManagerWidget::DefaultManagerWidget(std::shared_ptr<ISerializer> serializ
     ui->pinInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->cardNumInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->creditLimitInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\\.[0-9]{1,2})?$ ")));
+    ui->infoField->setReadOnly(true);
 }
 
 DefaultManagerWidget::~DefaultManagerWidget()
@@ -73,8 +74,23 @@ bool DefaultManagerWidget::checkDelete()
     return true;
 }
 
+void DefaultManagerWidget::cleanInput()
+{
+    ui->cardNumInputField->clear();
+    ui->pinInputField->clear();
+    ui->firstNameInputField->clear();
+    ui->lastNameInputField->clear();
+    ui->creditLimitInputField->clear();
+}
+void DefaultManagerWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 void DefaultManagerWidget::on_backButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     goBack(*currentManager.get());
 }
 
@@ -91,6 +107,7 @@ void DefaultManagerWidget::on_deleteCardButton_clicked()
     {
         registrator->remove_registration({ui->cardNumInputField->text()});
         ui->infoField->setText("Card deleted successfully.");
+        cleanInput();
     }
     catch(const DoesntExistException&)
     {
@@ -132,6 +149,7 @@ void DefaultManagerWidget::on_addCardButton_clicked()
         }
         registrator->make_registration(std::shared_ptr<ICard>(new_card));
         ui->infoField->setText("Card added successfully.");
+        cleanInput();
     }
     catch (const AlreadyExistsException&)
     {

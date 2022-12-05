@@ -16,7 +16,7 @@ PrivilegedManagerWidget::PrivilegedManagerWidget(std::shared_ptr<ISerializer> se
 {
     ui->setupUi(this);
     ui->passwordField->setEchoMode(QLineEdit::Password);
-    //registrator = std::make_shared<Mana
+    ui->infoField->setReadOnly(true);
 }
 
 PrivilegedManagerWidget::~PrivilegedManagerWidget()
@@ -44,6 +44,16 @@ bool PrivilegedManagerWidget::checkAdd()
     return true;
 }
 
+void PrivilegedManagerWidget::cleanInput()
+{
+    ui->loginField->clear();
+    ui->passwordField->clear();
+}
+void PrivilegedManagerWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 void PrivilegedManagerWidget::setCurrentManager(std::shared_ptr<AManager> manager)
 {
     currentManager = manager;
@@ -56,6 +66,8 @@ void PrivilegedManagerWidget::on_deleteManagerButton_clicked()
     try
     {
         registrator->remove_registration(ui->loginField->text());
+        cleanInput();
+        ui->infoField->setText("Manager deleted successfully.");
     }
     catch(const DoesntExistException&)
     {
@@ -66,7 +78,6 @@ void PrivilegedManagerWidget::on_deleteManagerButton_clicked()
 
 void PrivilegedManagerWidget::on_addManagerButton_clicked()
 {
-    qDebug() << "added\n";
     if(!checkAdd())
         return;
     try
@@ -84,10 +95,11 @@ void PrivilegedManagerWidget::on_addManagerButton_clicked()
             AdministratorFactory<PrivilegedManager> factory;
             QString login = ui->loginField->text();
             QString password = ui->passwordField->text();
-            //std::unique_ptr<AAdministrator> uptr = factory.create_product(ProductCommonInfo<AAdministrator>(login,password));
-            newManager = factory.create_product(ProductCommonInfo<AAdministrator>(login,password)); // std::make_shared<AManager>(dynamic_cast<AManager*>(uptr.release()));
+            newManager = factory.create_product(ProductCommonInfo<AAdministrator>(login,password));
         }
         registrator->make_registration(newManager);
+        cleanInput();
+        ui->infoField->setText("Manager added successfully.");
     }
     catch(const AlreadyExistsException&)
     {
@@ -98,12 +110,16 @@ void PrivilegedManagerWidget::on_addManagerButton_clicked()
 
 void PrivilegedManagerWidget::on_backButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
 }
 
 
 void PrivilegedManagerWidget::on_redactorModeButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::DEFAULT_MANAGER));
 }
 

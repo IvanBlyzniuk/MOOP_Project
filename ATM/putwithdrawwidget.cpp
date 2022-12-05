@@ -16,6 +16,7 @@ PutWithdrawWidget::PutWithdrawWidget(std::shared_ptr<ISerializer> ser,QWidget *p
     ui->pinInputField->setEchoMode(QLineEdit::Password);
     ui->pinInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->moneyInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\\.[0-9]{1,2})?$ ")));
+    ui->infoField->setReadOnly(true);
 }
 
 PutWithdrawWidget::~PutWithdrawWidget()
@@ -38,6 +39,16 @@ bool PutWithdrawWidget::check()
     return true;
 }
 
+void PutWithdrawWidget::cleanInput()
+{
+    ui->pinInputField->clear();
+    ui->pinInputField->clear();
+}
+void PutWithdrawWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 void PutWithdrawWidget::setCurrentCard(std::shared_ptr<ICard> card)
 {
     currentCard = card;
@@ -45,6 +56,8 @@ void PutWithdrawWidget::setCurrentCard(std::shared_ptr<ICard> card)
 
 void PutWithdrawWidget::on_backButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
 }
 

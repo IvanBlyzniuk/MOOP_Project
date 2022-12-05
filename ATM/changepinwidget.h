@@ -24,6 +24,8 @@ private:
     std::shared_ptr<ICard> currentCard;
     std::shared_ptr<ISerializer> serializer;
     bool check();
+    void cleanInput();
+    void cleanOutput();
 signals:
     void changePage(int);
 private slots:

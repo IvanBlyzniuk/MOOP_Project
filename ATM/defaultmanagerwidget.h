@@ -31,6 +31,8 @@ private:
     //void goBack(const AAdministrator&);
     bool checkAdd();
     bool checkDelete();
+    void cleanInput();
+    void cleanOutput();
 
 signals:
     void changePage(int);

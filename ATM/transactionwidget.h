@@ -31,7 +31,8 @@ private slots:
     void setCurrentCard(std::shared_ptr<ICard>);
     void on_backButton_clicked();
     void on_sendTransactionButton_clicked();
-
+    void cleanInput();
+    void cleanOutput();
 private:
     bool check();
 };

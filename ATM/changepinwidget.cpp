@@ -11,6 +11,7 @@ ChangePinWidget::ChangePinWidget(std::shared_ptr<ISerializer> ser,QWidget *paren
     ui->setupUi(this);
     ui->oldPinField->setEchoMode(QLineEdit::Password);
     ui->newPinField->setEchoMode(QLineEdit::Password);
+    ui->infoField->setReadOnly(true);
 }
 
 ChangePinWidget::~ChangePinWidget()
@@ -43,6 +44,16 @@ bool ChangePinWidget::check()
     return true;
 }
 
+void ChangePinWidget::cleanInput()
+{
+    ui->oldPinField->clear();
+    ui->newPinField->clear();
+}
+void ChangePinWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 void ChangePinWidget::setCurrentCard(std::shared_ptr<ICard> card)
 {
     currentCard = card;
@@ -50,6 +61,8 @@ void ChangePinWidget::setCurrentCard(std::shared_ptr<ICard> card)
 
 void ChangePinWidget::on_goBackButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
 }
 
@@ -61,6 +74,7 @@ void ChangePinWidget::on_changePinButton_clicked()
         currentCard->set_pin(ui->newPinField->text());
         serializer->serialize(currentCard);
         ui->infoField->setText("PIN changed succsessfully.");
+        cleanInput();
     }
 }
 

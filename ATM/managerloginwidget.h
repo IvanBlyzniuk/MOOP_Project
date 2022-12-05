@@ -26,8 +26,9 @@ private:
     Ui::ManagerLoginWidget *ui;
     std::shared_ptr<ILoginAgent<AManager>> loginAgent;
     void login(AManager&);
-    //void login(const PriviligedManager&);
     void makeManagerLogin();
+    void cleanInput();
+    void cleanOutput();
 signals:
     void changePage(int);
     void sendManager(std::shared_ptr<AManager>);

@@ -18,6 +18,7 @@ TransactionWidget::TransactionWidget(std::shared_ptr<ISerializer> ser,QWidget *p
     ui->pinInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
     ui->moneyInputField->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]{0,6}(\\.[0-9]{1,2})?$ ")));
     ui->cardNumField->setValidator(new QRegularExpressionValidator(QRegularExpression("[0-9]*")));
+    ui->infoField->setReadOnly(true);
 }
 
 TransactionWidget::~TransactionWidget()
@@ -32,6 +33,8 @@ void TransactionWidget::setCurrentCard(std::shared_ptr<ICard> card)
 
 void TransactionWidget::on_backButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
 }
 
@@ -61,6 +64,7 @@ void TransactionWidget::on_sendTransactionButton_clicked()
             float sum = ui->moneyInputField->text().toFloat();
             QString cardNum = ui->cardNumField->text();
             ui->infoField->setText(tr.sendTransaction(sum,cardNum)->toMessage());
+            cleanInput();
         }
         catch (const DoesntExistException&)
         {
@@ -68,4 +72,16 @@ void TransactionWidget::on_sendTransactionButton_clicked()
         }
     }
 }
+
+void TransactionWidget::cleanInput()
+{
+    ui->moneyInputField->clear();
+    ui->cardNumField->clear();
+    ui->pinInputField->clear();
+}
+void TransactionWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 

@@ -33,6 +33,8 @@ void LoginWidget::login()
     {
     //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<ICard> card = loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
+        cleanInput();
+        cleanOutput();
         emit sendCard(card);
         emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
     }
@@ -47,6 +49,15 @@ void LoginWidget::login()
     }
 }
 
+void LoginWidget::cleanInput()
+{
+    ui->cardNumField->clear();
+    ui->pinField->clear();
+}
+void LoginWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
 
 
 

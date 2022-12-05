@@ -8,11 +8,12 @@
 
 ManagerLoginWidget::ManagerLoginWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ManagerLoginWidget)
+    ui(new Ui::ManagerLoginWidget),
+    loginAgent(std::make_shared<ManagerLoginAgent>(serializer))
 {
     ui->setupUi(this);
     ui->passwordField->setEchoMode(QLineEdit::Password);
-    loginAgent = std::make_shared<ManagerLoginAgent>(serializer);
+    ui->infoField->setReadOnly(true);
 }
 
 ManagerLoginWidget::~ManagerLoginWidget()
@@ -47,6 +48,8 @@ void ManagerLoginWidget::makeManagerLogin()
     //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<AManager> manager = loginAgent -> login({ui->loginField->text(),ui->passwordField->text()});
         emit sendManager(manager);
+        cleanInput();
+        cleanOutput();
         login(*manager.get());
     }
     catch(...)
@@ -60,8 +63,20 @@ void ManagerLoginWidget::makeManagerLogin()
     }
 }
 
+void ManagerLoginWidget::cleanInput()
+{
+    ui->loginField->clear();
+    ui->passwordField->clear();
+}
+void ManagerLoginWidget::cleanOutput()
+{
+    ui->infoField->clear();
+}
+
 void ManagerLoginWidget::on_backButton_clicked()
 {
+    cleanInput();
+    cleanOutput();
     emit changePage(static_cast<int>(Widgets::CARD_LOGIN));
 }
 
