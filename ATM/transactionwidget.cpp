@@ -40,6 +40,11 @@ void TransactionWidget::on_backButton_clicked()
 
 bool TransactionWidget::check()
 {
+    if(ui->cardNumField->text() == currentCard->card_number())
+    {
+        ui->infoField->setText("Please, enter Card number, different from the selected card's one.");
+        return false;
+    }
     if(ui->pinInputField->text() != currentCard->card_pincode())
     {
         ui->infoField->setText("Please, enter correct PIN.");
