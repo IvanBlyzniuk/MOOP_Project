@@ -31,6 +31,11 @@ bool PrivilegedManagerWidget::checkDelete()
         ui->infoField->setText("Please fill in login.");
         return false;
     }
+    if(currentManager->login() == ui->loginField->text())
+    {
+        ui->infoField->setText("You cannot delete yourself.");
+        return false;
+    }
     return true;
 }
 
@@ -39,6 +44,11 @@ bool PrivilegedManagerWidget::checkAdd()
     if(ui->loginField->text().isEmpty() || ui->passwordField->text().isEmpty())
     {
         ui->infoField->setText("Please fill in all fields.");
+        return false;
+    }
+    if(!registrator->can_be_registered(ui->loginField->text()))
+    {
+        ui->infoField->setText("Specified manager already exists.");
         return false;
     }
     return true;

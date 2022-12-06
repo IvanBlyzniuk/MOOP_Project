@@ -61,6 +61,11 @@ bool DefaultManagerWidget::checkAdd()
         ui->infoField->setText("Pin should consist of 4 digits.");
         return false;
     }
+    if(!registrator->can_be_registered(ui->cardNumInputField->text()))
+    {
+        ui->infoField->setText("Specified card already exists.");
+        return false;
+    }
     return true;
 }
 
