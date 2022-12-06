@@ -2,6 +2,7 @@
 #include "Product/Cards/icard.h"
 #include "Transactions/transaction.h"
 #include "ui_putwithdrawwidget.h"
+#include "Product/Cards/creditcard.h"
 
 #include <Transactions/transactionmanager.h>
 
@@ -80,9 +81,12 @@ void PutWithdrawWidget::on_withdrawMoneyButton_clicked()
         try {
             TransactionManager tr(currentCard,serializer);
             ui->infoField->setText(tr.getMoney(ui->moneyInputField->text().toFloat())->toMessage());
-        } catch (...)
+        } catch (const NotEnoughMoneyException&)
         {
-            ui->infoField->setText("Your current limit does not allow you to withdraw such amount of money.");
+            if(auto casted = dynamic_cast<CreditCard*>(currentCard.get()); casted)
+                ui->infoField->setText("Your current limit does not allow you to withdraw such amount of money.");
+            else
+                ui->infoField->setText("Not enough money on balance to withdraw such an amount of money.");
         }
     }
 }
