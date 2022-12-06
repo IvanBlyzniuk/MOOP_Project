@@ -1,6 +1,7 @@
 #include "mainoptionswidget.h"
 #include "Product/Cards/icard.h"
 #include "ui_mainoptionswidget.h"
+#include "Product/Cards/creditcard.h"
 
 #include <QString>
 
@@ -60,6 +61,11 @@ void MainOptionsWidget::on_changePinButton_clicked()
 
 void MainOptionsWidget::on_checkBalanceButton_clicked()
 {
-    ui->infoField->setText("Current balance: " + QString::number(currentCard->card_balance()));
+    QString output = "Current balance: " + QString::number(currentCard->card_balance());
+    if(const CreditCard* casted = dynamic_cast<CreditCard*>(currentCard.get()); casted)
+    {
+        output += "\nCredit limit: " + QString::number(casted->credit_limit());
+    }
+    ui->infoField->setText(output);
 }
 
