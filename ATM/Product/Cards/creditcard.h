@@ -75,7 +75,7 @@ inline auto CreditCard::do_card_balance() const noexcept -> balance_type
 inline auto CreditCard::do_set_balance(const balance_type nval) -> void
 {
     if(nval < -credit_limit())
-        throw InputException("Balance cannot exceed credit limit.");
+        throw NotEnoughMoneyException("Balance cannot exceed credit limit.");
     _info.set_balance(nval);
 }
 

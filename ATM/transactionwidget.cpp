@@ -70,6 +70,10 @@ void TransactionWidget::on_sendTransactionButton_clicked()
         {
             ui->infoField->setText("Card number of the receiver is not valid.");
         }
+        catch(const NotEnoughMoneyException&)
+        {
+            ui->infoField->setText("Not enough money on the card.");
+        }
     }
 }
 
