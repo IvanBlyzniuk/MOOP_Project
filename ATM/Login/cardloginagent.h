@@ -14,7 +14,7 @@ public:
     CardLoginAgent(const std::shared_ptr<ISerializer>);
 private:
     std::shared_ptr<ISerializer> serializer;
-    std::shared_ptr<ICard> do_login(const LoginParams<ICard>&) const;
+    std::unique_ptr<ICard> do_login(const LoginParams<ICard>&) const;
 };
 
 
@@ -22,19 +22,9 @@ CardLoginAgent::CardLoginAgent(const std::shared_ptr<ISerializer> s) : serialize
 {
 }
 
-inline std::shared_ptr<ICard> CardLoginAgent::do_login(const LoginParams<ICard> & params) const
+inline std::unique_ptr<ICard> CardLoginAgent::do_login(const LoginParams<ICard> & params) const
 {
-
-    try
-    {
-        std::shared_ptr<ICard> card = cast_to<ICard>(serializer -> deserialize(params));
-        return card;
-    }
-    catch (...)
-    {
-        throw;
-    }
-
+    return cast_to<ICard>(serializer -> deserialize(params));
 }
 
 

@@ -14,7 +14,7 @@ public:
     ManagerLoginAgent(const std::shared_ptr<ISerializer>);
 private:
     std::shared_ptr<ISerializer> serializer;
-    std::shared_ptr<AManager> do_login(const LoginParams<AManager>&) const;
+    std::unique_ptr<AManager> do_login(const LoginParams<AManager>&) const;
 };
 
 
@@ -22,9 +22,9 @@ ManagerLoginAgent::ManagerLoginAgent(const std::shared_ptr<ISerializer> s) : ser
 {
 }
 
-inline std::shared_ptr<AManager> ManagerLoginAgent::do_login(const LoginParams<AManager> & params) const
+inline std::unique_ptr<AManager> ManagerLoginAgent::do_login(const LoginParams<AManager> & params) const
 {
-    std::shared_ptr<AManager> manager = cast_to<AManager>(serializer -> deserialize(params));
+    std::unique_ptr<AManager> manager = cast_to<AManager>(serializer -> deserialize(params));
     return manager;
 }
 
