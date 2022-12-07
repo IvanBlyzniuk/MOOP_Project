@@ -15,16 +15,16 @@ SOURCES += \
     Transactions/transactionmanager.cpp \
     Product/Managers/privilegedmanager.cpp \
     Product/Managers/standardmanager.cpp \
-    changepinwidget.cpp \
-    defaultmanagerwidget.cpp \
-    loginwidget.cpp \
+    Widgets/changepinwidget.cpp \
+    Widgets/defaultmanagerwidget.cpp \
+    Widgets/loginwidget.cpp \
     main.cpp \
-    mainoptionswidget.cpp \
-    mainwindow.cpp \
-    managerloginwidget.cpp \
-    privilegedmanagerwidget.cpp \
-    putwithdrawwidget.cpp \
-    transactionwidget.cpp
+    Widgets/mainoptionswidget.cpp \
+    Widgets/mainwindow.cpp \
+    Widgets/managerloginwidget.cpp \
+    Widgets/privilegedmanagerwidget.cpp \
+    Widgets/putwithdrawwidget.cpp \
+    Widgets/transactionwidget.cpp
 
 HEADERS += \
     DB/db.h \
@@ -58,26 +58,26 @@ HEADERS += \
     Transactions/transaction.h \
     Transactions/transactionmanager.h \
     Utils/casting.h \
-    changepinwidget.h \
-    defaultmanagerwidget.h \
-    loginwidget.h \
-    mainoptionswidget.h \
-    mainwindow.h \
-    managerloginwidget.h \
-    privilegedmanagerwidget.h \
-    putwithdrawwidget.h \
-    transactionwidget.h
+    Widgets/changepinwidget.h \
+    Widgets/defaultmanagerwidget.h \
+    Widgets/loginwidget.h \
+    Widgets/mainoptionswidget.h \
+    Widgets/mainwindow.h \
+    Widgets/managerloginwidget.h \
+    Widgets/privilegedmanagerwidget.h \
+    Widgets/putwithdrawwidget.h \
+    Widgets/transactionwidget.h
 
 FORMS += \
-    changepinwidget.ui \
-    defaultmanagerwidget.ui \
-    loginwidget.ui \
-    mainoptionswidget.ui \
-    mainwindow.ui \
-    managerloginwidget.ui \
-    privilegedmanagerwidget.ui \
-    putwithdrawwidget.ui \
-    transactionwidget.ui
+    Views/changepinwidget.ui \
+    Views/defaultmanagerwidget.ui \
+    Views/loginwidget.ui \
+    Views/mainoptionswidget.ui \
+    Views/mainwindow.ui \
+    Views/managerloginwidget.ui \
+    Views/privilegedmanagerwidget.ui \
+    Views/putwithdrawwidget.ui \
+    Views/transactionwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
