@@ -10,7 +10,6 @@ TransactionManager::TransactionManager(std::shared_ptr<ICard> card,std::shared_p
 
 const std::shared_ptr<Transaction> TransactionManager::getMoney(const float sum) const
 {
-    //TODO add methods in ICard class
     currentCard -> set_balance(currentCard ->card_balance() - sum);
     std::shared_ptr<Transaction> transaction = std::make_shared<Transaction>(sum,currentCard);
     serializer->serialize(currentCard);
@@ -27,7 +26,6 @@ const std::shared_ptr<Transaction> TransactionManager::putMoney(const float sum)
 
 const std::shared_ptr<Transaction> TransactionManager::sendTransaction(const float sum,const QString& cardToNum) const
 {
-    //TODO add methods in ICard class
     currentCard -> set_balance(currentCard ->card_balance() - sum);
     serializer -> change_balance(cardToNum,sum);
     std::shared_ptr<Transaction> transaction = std::make_shared<Transaction>(sum,currentCard,cardToNum);

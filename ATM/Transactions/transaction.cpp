@@ -13,7 +13,7 @@ const QString Transaction::toMessage() const
     {
         message = "Transaktion sent to " + cardTo
                 + "<br> Transaction amount: " + QString::number(msum)
-                + "<br> Current account: " + QString::number(cardFrom->card_balance()); // TODO add more text
+                + "<br> Current account: " + QString::number(cardFrom->card_balance());
     }
     else
     {

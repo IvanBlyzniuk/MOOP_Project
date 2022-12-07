@@ -2,7 +2,7 @@
 #include "ui_privilegedmanagerwidget.h"
 #include "Product/Factories/ManagerFactory.h"
 #include "Product/Factories/AdministratorFactory.h"
-#include "Product/Managers/StandardManager.h"
+#include "Product/Managers/standardmanager.h"
 #include "Product/Managers/privilegedmanager.h"
 #include "Exceptions/AlreadyExistsException.h"
 #include "Exceptions/DoesntExistException.h"

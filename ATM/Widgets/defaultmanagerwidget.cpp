@@ -29,7 +29,7 @@ void DefaultManagerWidget::goBack(AManager& manager)
 {
     try
     {
-        dynamic_cast<PrivilegedManager&>(manager);
+        [[maybe_unused]] auto ptr = dynamic_cast<PrivilegedManager&>(manager);
         emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
     }
     catch (const std::bad_cast&)
@@ -37,11 +37,6 @@ void DefaultManagerWidget::goBack(AManager& manager)
         emit changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
     }
 }
-
-//void DefaultManagerWidget::goBack(const AAdministrator &)
-//{
-//    emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
-//}
 
 bool DefaultManagerWidget::checkAdd()
 {

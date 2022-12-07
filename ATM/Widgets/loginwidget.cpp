@@ -2,7 +2,7 @@
 #include "ui_loginwidget.h"
 #include <QRegularExpressionValidator>
 #include "Product/Cards/icard.h"
-#include "Login/iloginagent.h"
+#include "Login/ILoginAgent.h"
 
 #include "Login/cardloginagent.h"
 
@@ -31,7 +31,6 @@ void LoginWidget::login()
     {
     try
     {
-    //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<ICard> card = loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         cleanInput();
         cleanOutput();
@@ -69,6 +68,6 @@ void LoginWidget::on_loginButton_clicked()
 
 void LoginWidget::on_privilegedButton_clicked()
 {
-    changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
+    emit changePage(static_cast<int>(Widgets::MANAGER_LOGIN));
 }
 

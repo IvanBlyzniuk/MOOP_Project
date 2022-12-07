@@ -5,7 +5,6 @@
 #include "Product/ProductInfo.h"
 
 template<typename AbstractProduct>
-    //requires std::is_abstract_v<AbstractProduct>
 class IFactory
 {
 public:

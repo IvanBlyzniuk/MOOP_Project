@@ -18,7 +18,7 @@ public:
     void remove_registration(const product_key_type&) const;
     bool can_be_registered(const product_key_type&) const noexcept;
 private:
-    virtual void do_make_registration(product_ptr) const          = 0;
+    virtual void do_make_registration(product_ptr) const                           = 0;
     virtual void do_remove_registration(const product_key_type&)    const          = 0;
     virtual bool do_can_be_registered(const product_key_type&)      const noexcept = 0;
 };

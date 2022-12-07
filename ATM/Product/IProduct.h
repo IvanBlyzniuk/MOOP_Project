@@ -1,11 +1,6 @@
 #ifndef IPRODUCT_H
 #define IPRODUCT_H
 
-//template<typename T>
-//concept c_product = requires(T prod)
-//{
-//  {prod.key_info()} ->
-//};
 template<typename AbstractProduct>
 class ProductCommonInfo;
 
@@ -44,5 +39,4 @@ inline const LoginParams<IProduct>& IProduct::login_info() const noexcept
     return do_login_info();
 }
 
-//#include "ProductInfo.h"
 #endif // IPRODUCT_H

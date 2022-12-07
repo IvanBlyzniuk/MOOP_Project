@@ -4,7 +4,7 @@
 #include <Login/managerloginagent.h>
 #include <Product/Managers/privilegedmanager.h>
 #include <Product/Managers/amanager.h>
-#include <Product/Managers/StandardManager.h>
+#include <Product/Managers/standardmanager.h>
 
 ManagerLoginWidget::ManagerLoginWidget(std::shared_ptr<ISerializer> serializer,QWidget *parent) :
     QWidget(parent),
@@ -25,7 +25,7 @@ void ManagerLoginWidget::login(AManager& manager)
 {
     try
     {
-        dynamic_cast<PrivilegedManager&>(manager);
+        [[maybe_unused]] auto ptr = dynamic_cast<PrivilegedManager&>(manager);
         emit changePage(static_cast<int>(Widgets::PRIVILEGED_MANAGER));
     }
     catch (const std::bad_cast&)
@@ -34,18 +34,12 @@ void ManagerLoginWidget::login(AManager& manager)
     }
 }
 
-//void ManagerLoginWidget::login(const PriviligedManager&)
-//{
-
-//}
-
 void ManagerLoginWidget::makeManagerLogin()
 {
     if(!ui->loginField->text().isEmpty() && !ui->passwordField->text().isEmpty())
     {
     try
     {
-    //    loginAgent -> login({ui->cardNumField->text(),ui->pinField->text()});
         std::shared_ptr<AManager> manager = loginAgent -> login({ui->loginField->text(),ui->passwordField->text()});
         emit sendManager(manager);
         cleanInput();
