@@ -3,7 +3,7 @@
 #include <QRegularExpressionValidator>
 #include "Product/Cards/icard.h"
 #include "Login/ILoginAgent.h"
-
+#include "Exceptions/DoesntExistException.h"
 #include "Login/cardloginagent.h"
 
 
@@ -37,7 +37,7 @@ void LoginWidget::login()
         emit sendCard(card);
         emit changePage(static_cast<int>(Widgets::MAIN_OPTIONS));
     }
-    catch(...)
+    catch(const DoesntExistException&)
     {
         ui->infoField->setText("Login data is incorrect!");
     }

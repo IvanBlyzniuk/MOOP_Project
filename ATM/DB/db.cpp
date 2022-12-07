@@ -314,7 +314,7 @@ auto DB::deserialize_card(const LoginParams<ICard>& key) const -> out_product_pt
         QString last_name = query.value(rec.indexOf("lastname")).toString();
         float credit_limit = query.value(rec.indexOf("credit_limit")).toFloat();
         CardFactory<CreditCard> factory;
-        std::unique_ptr<ICard> uicardPtr = factory.create_product({number,pin,first_name,last_name,balance});
+        std::unique_ptr<ICard> uicardPtr = factory.create_product({number,pin,first_name,last_name,balance});//throw
         std::unique_ptr<CreditCard> res(dynamic_cast<CreditCard*>(uicardPtr.release()));
         res->set_credit_limit(credit_limit);
         return res;

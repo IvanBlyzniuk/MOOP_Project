@@ -96,8 +96,7 @@ inline const ProductCommonInfo<IProduct> &CreditCard::do_common_info() const noe
 
 inline auto CreditCard::check_input() const noexcept -> bool
 {
-    //TODO text input checking
-    return card_balance() >= 0;
+    return true;
 }
 
 inline auto CreditCard::do_owner_firstname() const noexcept -> const text_type&
